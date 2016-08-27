@@ -6,7 +6,7 @@ var server = http.createServer(function(request, response) {
     // process HTTP request. Since we're writing just WebSockets server
     // we don't have to implement anything.
 });
-server.listen(1337, function() { });
+server.listen(process.env.PORT || 1337, function() { });
 
 // create the server
 wsServer = new WebSocketServer({
@@ -94,7 +94,7 @@ function game_function(){
             remove_player(player);
         }
 
-		// 
+		//
 
 	}
 }
@@ -149,7 +149,7 @@ wsServer.on('request', function(request) {
         new_dir = message.utf8Data;
         old_dir = player_data["direction"]
         if(old_dir != new_dir){
-            if( (old_dir in ['up', 'down'] && new_dir in ['up', 'down']) || 
+            if( (old_dir in ['up', 'down'] && new_dir in ['up', 'down']) ||
                 (old_dir in ['left', 'right'] && new_dir in ['left' , 'right'])){
                 // don't go back on yourself...
             } else {
@@ -157,11 +157,10 @@ wsServer.on('request', function(request) {
             }
         }
     });
-    
+
 
     connection.on('close', function(connection) {
         console.log('hello');
     });
     // */
 });
-
