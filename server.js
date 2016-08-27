@@ -101,7 +101,7 @@ function game_function(){
 
 
 // MAIN GAME LOOP
-setInterval(compute_and_emit, 500);
+setInterval(compute_and_emit, process.env.GAME_SPEED || 500);
 function compute_and_emit(){
 	// compute the tick
 	game_function();
