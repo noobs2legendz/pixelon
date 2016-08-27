@@ -1,4 +1,4 @@
-var _ = require('lodash');
+//var _ = require('lodash');
 WebSocketServer = require('websocket').server;
 var http = require('http');
 
@@ -35,8 +35,8 @@ function render_state_for_player(player){
 }
 
 function new_player(player, connection){
-    player_start_x = 10 + player*5;
-    player_start_y = 10 + player*5;
+    player_start_x = 2 + player*5;
+    player_start_y = 2 + player*5;
 	// new player set up
 	state["players"][player] = {}
 
@@ -54,11 +54,16 @@ function game_function(){
 	// do something every tick here
 	state["iteration"]++;
 
+    //console.log(state);
+
 	for(var player in state["players"]){
+		player_data = state["players"][player];
+        console.log("player: " + player);
+        console.log("position: " + JSON.stringify(player_data["position"]));
+        console.log("score: " + JSON.stringify(player_data["score"]));
+        console.log("");
 
 		// ignore dead players
-		console.log(state);
-		player_data = state["players"][player];
 		if("dead" in player_data){
 			continue;
 		}
@@ -83,6 +88,11 @@ function game_function(){
 		state["grid"][player_data["position"]["x"] + '|' + player_data["position"]["y"]] = {'p': player};
 
 		// kill players if they need killing
+        //  1) if they go out of bounds
+        if(player_pos_x > 24 || player_pos_x < 0 || player_pos_y > 62 || player_pos_y < 0){
+            console.log("removing player " + player);
+            remove_player(player);
+        }
 
 		// 
 
@@ -104,6 +114,18 @@ function compute_and_emit(){
 	}
 }
 
+function remove_player(player){
+    player_data = state["players"][player];
+    player_data["dead"] = true;
+
+    grid = state["grid"];
+    for(var pos in grid){
+        if(grid[pos]["p"] == player){
+            delete state["grid"][pos];
+        }
+    }
+}
+
 // WebSocket server
 var players = 0;
 wsServer.on('request', function(request) {
@@ -117,9 +139,8 @@ wsServer.on('request', function(request) {
     players++;
 
     connection.sendUTF('hello');
-    // This is the most important callback for us, we'll handle
-    // all messages from users here.
-    //*
+
+    // we were sent a message from the client
     connection.on('message', function(message) {
         player_data = state["players"][connection.player_id];
 		// update player direction
