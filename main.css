@@ -19,6 +19,8 @@
 .container{
 	padding-left: 80px;
 	padding-right: 80px;
+  width: 1602px;
+  margin: auto;
 }
 
 
@@ -122,7 +124,7 @@
 	text-transform: uppercase;
 	color: white;
 
-	padding-left: 20px;
+	padding-left: 20px;40
 	padding-top: 20px;
 
 	text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
@@ -149,7 +151,6 @@
 .game {
 	border: #4646FF 1px solid;
 	margin-bottom: 80px;
-	height: 62%;
  	color: #4646ff;
 
 	box-shadow: 0px 0px 50px 0px rgba(0,0,255,0.5), inset 0px 0px 50px 0px rgba(0,0,255,0.5);
@@ -274,3 +275,19 @@
 }
 
 /* END Orange */
+
+.Grid_Cell {
+	float: left;
+	width: 20px;
+	height: 20px;
+}
+.Grid_Row {
+}
+.Grid_Cell_Occupied {
+	position: relative;
+	display: block;
+	margin-top: -15px;
+	border-radius: 6px;
+	border: #64FF64 3px solid;
+	box-shadow: 0px 0px 10px 0px #64FF64;
+}
