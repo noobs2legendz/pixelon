@@ -3,16 +3,18 @@
 	<head>
 		<title>Pixelon</title>
 		<!--<script type="text/javascript" src="main.js" />-->
+
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,700" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="main.css">
-		<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,700" rel="stylesheet">
-		<h1 id="title">Pixelon</h1>
 	</head>
 	<body>
+		<div class="logo-container"><img class="logo"src="pixelon.svg" alt="pixelon"><img/></div>
+
 		<div class="container">
 			<div class="highscores">
 
 				<div class="currentHS">
-					<div class="currentName">Joel</div> 
+					<div class="currentName">J0el69</div>
 					<div class="currentScore">15,240</div>
 				</div>
 
@@ -33,11 +35,145 @@
 			 </div>
 
 			 <div class="game">
-			 	
+				 <div id="app" />
+				<div class="player-blue">
+					 <div class="blue-head"></div>
+					 <div class="blue-tail"></div>
+				</div>
+
+				<div class="player-red">
+					 <div class="red-head"></div>
+					 <div class="red-tail"></div>
+				</div>
+
+				<div class="player-green">
+					 <div class="green-head"></div>
+					 <div class="green-tail"></div>
+				</div>
+
+				<div class="player-orange">
+					 <div class="orange-head"></div>
+					 <div class="orange-tail"></div>
+				</div>
+
 			 </div>
 		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.11.2/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.5.2/redux.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-with-addons.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/4.4.5/react-redux.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.4.6/mousetrap.min.js" type="text/javascript"></script>
+<script type="text/babel">
+
+  const {Component} = React; // import {Component} from 'react';
+  const {map} = _; // import {map} from 'lodash'
+
+// var c = document.getElementById("myCanvas");
+
+class Cell extends Component {
+  render () {
+    const {cell} = this.props;
+    let classes = "Grid_Cell";
+    if (cell && !!cell.player) {
+      classes = classes + ' Grid_Cell_Occupied'
+    }
+    return (
+      <div className={classes}>
+
+      </div>
+    );
+  }
+}
+class Row extends Component {
+  render () {
+    const {cells} = this.props;
+    const cellComponents = [];
+    _.each(cells, (cell) => {
+      cellComponents.push(<Cell cell={cell} />);
+    })
+    return (
+      <div className="Grid_Row">
+        {cellComponents}
+        <div style={{clear: 'both'}} />
+      </div>
+    );
+  }
+}
+class Grid extends Component {
+  constructor (props, context) {
+    super(props, context);
+    window.WebSocket = window.WebSocket || window.MozWebSocket;
+    var connection = new WebSocket('ws://10.0.73.141:1337');
+    connection.onmessage = (message) => {
+      var moves = JSON.parse(message.data).grid;
+      // const cells = _.values(json);
+      var newGrid = _.clone(this.state.grid);
+      for (var key in moves) {
+        const position = key.split('|');
+        if (position[0] > 0 && position[1] > 0) {
+          if (typeof newGrid[position[0]] !== 'undefined' && typeof newGrid[position[0]][position[1]] !== 'undefined') {
+            newGrid[position[0]][position[1]] = {
+              player: 1
+            };
+          }
+        }
+      }
+      this.setState({
+        grid: newGrid,
+      })
+      // _.each(cells[0], (cell) => {
+      // })
+    };
+    var grid = [];
+    var GRID_HEIGHT = 20;
+    var GRID_WIDTH = 80;
+    for(var i = 0; i < GRID_HEIGHT; i++) {
+      var row = [];
+      for(var a = 0; a < GRID_WIDTH; a++) {
+        row.push(null)
+      }
+      grid.push(row);
+    }
+    this.state = {
+      grid,
+      connection,
+    }
+  }
+  componentWillMount () {
+    const {connection} = this.state;
+    Mousetrap.bind('left', () => {
+      connection.send('left');
+    });
+    Mousetrap.bind('right', () => {
+      connection.send('right');
+    });
+    Mousetrap.bind('up', () => {
+      connection.send('up');
+    });
+    Mousetrap.bind('down', () => {
+      connection.send('down');
+    });
+  }
+  render () {
+    const {items, addItem} = this.props;
+    const {grid} = this.state;
+    const rows = [];
+    _.each(grid, function (row, index) {
+      rows.push(<Row cells={row} />);
+    });
+    return (<div>
+      {rows}
+    </div>);
+  }
+}
+ReactDOM.render(<Grid />,
+     document.getElementById('app')
+   );
+
+
+</script>
 	</body>
 </html>
-
-
-
