@@ -106,7 +106,7 @@ class Grid extends Component {
   constructor (props, context) {
     super(props, context);
     window.WebSocket = window.WebSocket || window.MozWebSocket;
-    var connection = new WebSocket('ws://10.0.73.141:1337');
+    var connection = new WebSocket('wss://pixelon.herokuapp.com/');
     connection.onmessage = (message) => {
       var moves = JSON.parse(message.data).grid;
       // const cells = _.values(json);
