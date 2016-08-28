@@ -3,6 +3,16 @@ import ReactDOM from 'react-dom';
 import Mousetrap from 'mousetrap';
 import _ from 'lodash';
 
+// This acts as a stack
+const PLAYER_COLORS = [
+  'red',
+  'blue',
+  'green',
+  'orange'
+]
+
+const PLAYER_COLOR = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+console.log(PLAYER_COLOR)
   const {Component} = React; // import {Component} from 'react';
   const {map} = _; // import {map} from 'lodash'
 console.log('horah')
@@ -12,12 +22,12 @@ class Cell extends Component {
   render () {
     const {cell} = this.props;
     let classes = "Grid_Cell";
-    if (cell && !!cell.player) {
+    if (cell && !!cell.p) {
       classes = classes + ' Grid_Cell_Occupied'
     }
     return (
       <div className={classes}>
-
+        {cell && cell.p}
       </div>
     );
   }
@@ -41,18 +51,21 @@ class Grid extends Component {
   constructor (props, context) {
     super(props, context);
     window.WebSocket = window.WebSocket || window.MozWebSocket;
-    var connection = new WebSocket('wss://pixelon.herokuapp.com/');
+    var isDebug = function(){
+      return window.location.href.search("[?&]debug") != -1;
+    };
+    var connection = new WebSocket(!isDebug ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
     connection.onmessage = (message) => {
       var moves = JSON.parse(message.data).grid;
       // const cells = _.values(json);
       var newGrid = _.clone(this.state.grid);
       for (var key in moves) {
         const position = key.split('|');
+        const move = moves[key];
+        // console.log(position)
         if (position[0] > 0 && position[1] > 0) {
-          if (typeof newGrid[position[0]] !== 'undefined' && typeof newGrid[position[0]][position[1]] !== 'undefined') {
-            newGrid[position[0]][position[1]] = {
-              player: 1
-            };
+          if (typeof newGrid[position[1]] !== 'undefined' && typeof newGrid[position[1]][position[0]] !== 'undefined') {
+            newGrid[position[1]][position[0]] = move;
           }
         }
       }
@@ -97,6 +110,7 @@ class Grid extends Component {
     const {grid} = this.state;
     const rows = [];
     _.each(grid, function (row, index) {
+      console.log(row.length)
       rows.push(<Row cells={row} />);
     });
     return (<div>
@@ -106,8 +120,9 @@ class Grid extends Component {
 }
 class App extends Component {
   render () {
+    const {color} = this.props
     return (
-			<div className="App">
+			<div className={'APP APP_COLOR_${color}'}>
 				<div className="logo-container"><img className="logo"src="pixelon.svg" alt="pixelon" /></div>
 
 				<div className="container">
@@ -162,6 +177,6 @@ class App extends Component {
     );
   }
 }
-ReactDOM.render(<App />,
+ReactDOM.render(<App color={PLAYER_COLOR} />,
      document.getElementById('app')
    );

@@ -72,6 +72,11 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	// This acts as a stack
+	var PLAYER_COLORS = ['red', 'blue', 'green', 'orange'];
+
+	var PLAYER_COLOR = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+	console.log(PLAYER_COLOR);
 	var Component = _react2.default.Component; // import {Component} from 'react';
 
 	var map = _lodash2.default.map; // import {map} from 'lodash'
@@ -94,10 +99,14 @@
 	      var cell = this.props.cell;
 
 	      var classes = "Grid_Cell";
-	      if (cell && !!cell.player) {
+	      if (cell && !!cell.p) {
 	        classes = classes + ' Grid_Cell_Occupied';
 	      }
-	      return _react2.default.createElement('div', { className: classes });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: classes },
+	        cell && cell.p
+	      );
 	    }
 	  }]);
 
@@ -143,18 +152,21 @@
 	    var _this3 = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props, context));
 
 	    window.WebSocket = window.WebSocket || window.MozWebSocket;
-	    var connection = new WebSocket('wss://pixelon.herokuapp.com/');
+	    var isDebug = function isDebug() {
+	      return window.location.href.search("[?&]debug") != -1;
+	    };
+	    var connection = new WebSocket(!isDebug ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
 	    connection.onmessage = function (message) {
 	      var moves = JSON.parse(message.data).grid;
 	      // const cells = _.values(json);
 	      var newGrid = _lodash2.default.clone(_this3.state.grid);
 	      for (var key in moves) {
 	        var position = key.split('|');
+	        var move = moves[key];
+	        // console.log(position)
 	        if (position[0] > 0 && position[1] > 0) {
-	          if (typeof newGrid[position[0]] !== 'undefined' && typeof newGrid[position[0]][position[1]] !== 'undefined') {
-	            newGrid[position[0]][position[1]] = {
-	              player: 1
-	            };
+	          if (typeof newGrid[position[1]] !== 'undefined' && typeof newGrid[position[1]][position[0]] !== 'undefined') {
+	            newGrid[position[1]][position[0]] = move;
 	          }
 	        }
 	      }
@@ -209,6 +221,7 @@
 
 	      var rows = [];
 	      _lodash2.default.each(grid, function (row, index) {
+	        console.log(row.length);
 	        rows.push(_react2.default.createElement(Row, { cells: row }));
 	      });
 	      return _react2.default.createElement(
@@ -234,9 +247,11 @@
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
+	      var color = this.props.color;
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'App' },
+	        { className: 'APP APP_COLOR_${color}' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'logo-container' },
@@ -304,7 +319,7 @@
 	  return App;
 	}(Component);
 
-	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
+	_reactDom2.default.render(_react2.default.createElement(App, { color: PLAYER_COLOR }), document.getElementById('app'));
 
 /***/ },
 /* 1 */

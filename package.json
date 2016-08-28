@@ -8,7 +8,9 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "css": "lessc client/src/app.less client/dist/app.css",
+    "watch-css": "nodemon -e less --watch client/src -x \"npm run css\""
   },
   "repository": {
     "type": "git",
