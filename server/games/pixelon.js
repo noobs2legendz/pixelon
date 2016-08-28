@@ -155,12 +155,14 @@ Pixelon.prototype.tick = function(){
         if(pos.x < 0 || pos.x >= this.size_x || pos.y < 0 || pos.y >= this.size_y){
             //console.log('robin1');
             dead = true;
+            console.log('player ' + player + ' has died by hitting the edge');
         } else if((pos.x+'|'+pos.y) in grid){
             //console.log('robin2');
-            //console.log('a', grid[pos.x+'|'+pos.y]);
+            console.log('a', grid[pos.x+'|'+pos.y]);
             if(grid[pos.x+'|'+pos.y].p == player && !('old' in grid[pos.x+'|'+pos.y])){
                 // we can't kill ourselves with our own head
             } else {
+                console.log('player ' + player + ' has died by colliding');
                 dead = true;
             }
         }
@@ -213,7 +215,7 @@ Pixelon.prototype.tick = function(){
         grid[pos.x + '|' + pos.y] = {p: player};
     }
 
-    //console.log('game -- current state: ', this.state);
+    console.log('game -- current state: ', this.state);
 }
 
 Pixelon.prototype.get_game_state = function(player){

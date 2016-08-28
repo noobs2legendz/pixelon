@@ -17,6 +17,7 @@ function MulticlientGameServer(game){
     // current list of clients, {names: websocket connections}
     this.client_connections = {}
     this.client_player_names = {}
+    //this.player_client_names = {}
 
     // arbitrary numbering of clients
     this.arbitrary_client_number = 0;
@@ -50,8 +51,9 @@ MulticlientGameServer.prototype.new_client = function(connection){
         } else {
             if(input.type == 'start'){
                 // start a new game with the given name
-                this.game.new_player(input.name); // TODO move this shortly
+                this.game.new_player(client_name); // TODO move this shortly
                 this.client_player_names[client_name] = input.name;
+                //this.player_client_names[input.name] = client_name
                 //console.log('robin', this.client_player_names);
                 
                 // give the client an immediate update
@@ -60,7 +62,8 @@ MulticlientGameServer.prototype.new_client = function(connection){
                 if(!(client_name in this.client_player_names)){
                     // can't send anything without first starting
                 } else {
-                    var player_name = this.client_player_names[client_name];
+                    //var player_name = this.client_player_names[client_name];
+                    var player_name = client_name;
                     // TODO remove this from server code
                     dir = input.direction;
                     
@@ -92,10 +95,18 @@ MulticlientGameServer.prototype.update_client = function(client){
     //console.log('update_client');
     // we call this to send the client the current state of the game
     var socket = this.client_connections[client];
-    var player_name = this.client_player_names[client];
+    var player_name = client; //this.client_player_names[client];
     var game_data = this.game.get_game_state(player_name);
+
+    // THIS IS
     game_data.player = client;
+
     // TODO HAX ARE HERE
+    /*
+    for(var grid_spot in game_data.grid){
+        var grid_thing = game_data.grid[grid_spot];
+        grid_thing.p = this.player_client_names[player_name];
+    }
     if(game_data.events.length){
         for(var i in game_data.events){
             the_event = game_data.events[i];
@@ -104,6 +115,8 @@ MulticlientGameServer.prototype.update_client = function(client){
             }
         }
     }
-    //console.log(game_data);
+    console.log(game_data);
+    */
+
     socket.sendUTF(JSON.stringify(game_data));
 }
