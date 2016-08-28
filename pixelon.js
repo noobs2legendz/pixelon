@@ -46,7 +46,7 @@ function Pixelon(){
 
 Pixelon.prototype.new_player = function(real_name){
     var player_name = this.arbitrary_number_for_names++;
-    console.log('game -- created new player name: ' + player_name);
+    console.log('game -- created new player name ' + player_name + ' with real name: ' + real_name);
 
     // generate starting square
     var x = Math.floor(3+Math.random()*this.size_x-3);
