@@ -23,12 +23,12 @@ websocket_server.on('request', function(request) {
 
 console.log('Server Has Started!');
 
-// Normal web server
-var express = require('express');
-var app = express();
-
-app.get('/', function(req, res){
-  res.send('hello world');
-});
-
-app.listen(process.env.PORT || 8000);
+// // Normal web server
+// var express = require('express');
+// var app = express();
+//
+// app.get('/', function(req, res){
+//   res.send('hello world');
+// });
+//
+// app.listen(process.env.PORT || 8000);
