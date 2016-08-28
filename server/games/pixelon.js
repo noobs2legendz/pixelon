@@ -103,7 +103,7 @@ Pixelon.prototype.process_input = function(player, input){
 }
 
 Pixelon.prototype.tick = function(){
-    //console.log('game -- tick');
+    console.log('game -- tick');
     this.state.events = [];
     // update any blocks that are disappearing first, as we need 
     // don't want to give advantage to the players due to their list order

@@ -92,5 +92,7 @@ MulticlientGameServer.prototype.update_client = function(client){
     // we call this to send the client the current state of the game
     var socket = this.client_connections[client];
     var player_name = this.client_player_names[client];
-    socket.sendUTF(JSON.stringify(this.game.get_game_state(player_name)));
+    var game_data = this.game.get_game_state(player_name);
+    game_data.player = client;
+    socket.sendUTF(JSON.stringify(game_data));
 }
