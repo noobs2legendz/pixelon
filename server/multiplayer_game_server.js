@@ -45,14 +45,14 @@ MulticlientGameServer.prototype.new_client = function(connection){
         console.log('server -- recieved message: ', message);
         var input = JSON.parse(message.utf8Data);
         if(!('type' in input)){
-            console.log('bad message :(');
+            console.log('server -- bad message :(');
             return;
         } else {
             if(input.type == 'start'){
                 // start a new game with the given name
                 this.game.new_player(input.name); // TODO move this shortly
                 this.client_player_names[client_name] = input.name;
-                console.log('robin', this.client_player_names);
+                //console.log('robin', this.client_player_names);
                 
                 // give the client an immediate update
                 this.update_client(client_name);
@@ -60,11 +60,12 @@ MulticlientGameServer.prototype.new_client = function(connection){
                 if(!(client_name in this.client_player_names)){
                     // can't send anything without first starting
                 } else {
+                    var player_name = this.client_player_names[client_name];
                     // TODO remove this from server code
                     dir = input.direction;
                     
                     // if it's not a server input, pass it to the game
-                    this.game.process_input(input.name, input.direction);
+                    this.game.process_input(player_name, input.direction);
                 }
             }
         }
@@ -72,13 +73,14 @@ MulticlientGameServer.prototype.new_client = function(connection){
 
     // client leaves ...
     connection.on('close', (connection) => {
-        this.client_leaves(connection.client_name);
+        this.client_leaves(connection);
     });
 
 }
 
 MulticlientGameServer.prototype.client_leaves = function(connection){
-    delete this.clients[connection.client_name];
+    delete this.client_player_names[connection.client_name];
+    delete this.client_connections[connection.client_name];
     // let everyone who's still here know, maybe
     for(var client in this.clients){
         //socket = clients[client];

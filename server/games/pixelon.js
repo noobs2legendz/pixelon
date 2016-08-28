@@ -40,13 +40,13 @@ function Pixelon(){
     this.size_y = 20;
 
     // TODO remove this damn thing
-    this.arbitrary_number_for_names = 0;
+    //this.arbitrary_number_for_names = 0;
 }
 
 
-Pixelon.prototype.new_player = function(real_name){
-    var player_name = this.arbitrary_number_for_names++;
-    console.log('game -- created new player name ' + player_name + ' with real name: ' + real_name);
+Pixelon.prototype.new_player = function(player_name){
+    //var player_name = this.arbitrary_number_for_names++;
+    console.log('game -- created new player name ' + player_name + ' with real name: ' + player_name);
 
     // generate starting square
     var x = Math.floor(3+Math.random()*this.size_x-3);
@@ -66,14 +66,13 @@ Pixelon.prototype.new_player = function(real_name){
 
     // create the players info
     this.state.player_info[player_name] = {
-        name: real_name,
         previous_dir: false,
         dir: false,
         pos: {x: x, y: y},
         previous_pos: [{x: x, y: y}],
     };
 
-    console.log('game -- created new player with info: ', this.state.player_info[player_name]);
+    //console.log('game -- created new player with info: ', this.state.player_info[player_name]);
     return player_name;
 }
 
@@ -93,6 +92,7 @@ Pixelon.prototype.process_input = function(player, input){
             backwards = backwards || (lr.indexOf(info.previous_dir) >= 0 && lr.indexOf(new_dir) >= 0);
             if( backwards ){
                 // don't go back on yourself
+                //console.log('back on yourself...');
             } else {
                 info.dir = new_dir;
             }
@@ -159,7 +159,7 @@ Pixelon.prototype.tick = function(){
             dead = true;
         } else if((pos.x+'|'+pos.y) in grid){
             //console.log('robin2');
-            console.log('a', grid[pos.x+'|'+pos.y]);
+            //console.log('a', grid[pos.x+'|'+pos.y]);
             if(grid[pos.x+'|'+pos.y].p == player && !('old' in grid[pos.x+'|'+pos.y])){
                 // we can't kill ourselves with our own head
             } else {
@@ -215,7 +215,7 @@ Pixelon.prototype.tick = function(){
         grid[pos.x + '|' + pos.y] = {p: player};
     }
 
-    //console.log('game -- current state: ', this.state);
+    console.log('game -- current state: ', this.state);
 }
 
 Pixelon.prototype.get_game_state = function(player){
