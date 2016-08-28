@@ -1,4 +1,5 @@
 module.exports = Pixelon;
+// import clone from 'lodash/clone';
 
 // a game class, it needs to implement the following:
 //  1) property: game_speed
@@ -68,6 +69,7 @@ Pixelon.prototype.new_player = function(){
         previous_dir: false,
         dir: false,
         pos: {x: x, y: y},
+        previous_pos: [{x: x, y: y}],
     };
 
     console.log('game -- created new player with info: ', this.state.player_info[player_name]);
@@ -169,7 +171,7 @@ Pixelon.prototype.tick = function(){
         }
     }
 
-    // update the grid
+    // update the grid and positions
     //  1) remove dead players
     var dead_players = []
     for(var player in this.state.player_info){
@@ -182,11 +184,15 @@ Pixelon.prototype.tick = function(){
     }
     //console.log(dead_players);
     dead_players.forEach((dead_player) => {
+        var info = this.state.player_info[dead_player];
+
         console.log('game -- player ' + dead_player + ' has died!');
         var grid = this.state.grid;
 
         // TODO add event to only relevent players
-        this.state.events.push({'death': dead_player, /*TODO player list*/});
+        var death_event = {'death': dead_player, 'pos': info.previous_pos};
+        //console.log('death: ', death_event);
+        this.state.events.push(death_event);
 
         for(var gridspot in grid){
             if(grid[gridspot].p == dead_player){
@@ -200,6 +206,10 @@ Pixelon.prototype.tick = function(){
         var info = this.state.player_info[player];
         var pos = info.pos;
         var grid = this.state.grid;
+        // don't add a new position to the list if it's the same as the last
+        if(!this._points_equal(pos, info.previous_pos[info.previous_pos.length-1])){
+            info.previous_pos.push({x: pos.x, y: pos.y});
+        }
         grid[pos.x + '|' + pos.y] = {p: player};
     }
 
@@ -212,7 +222,6 @@ Pixelon.prototype.get_game_state = function(player){
         grid: this.state.grid,
         time: this.state.iteration,
         events: this.state.events
-
     }
 }
 
@@ -230,4 +239,8 @@ Pixelon.prototype._grid_spot_taken = function(x, y){
         }
     }
     return false;
+}
+
+Pixelon.prototype._points_equal = function(p, q){
+    return(p.x == q.x && p.y == q.y);
 }
