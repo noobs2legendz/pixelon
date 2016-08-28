@@ -129,7 +129,7 @@
 	            (0, _each2.default)(event.pos, function (pos) {
 	              newGrid[pos.y][pos.x] = null;
 	            });
-	            if (true) {
+	            if (event.death * 1 === player * 1) {
 	              dead = true;
 	              _this.setName(null);
 	            }
