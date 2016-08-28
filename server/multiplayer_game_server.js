@@ -37,7 +37,7 @@ MulticlientGameServer.prototype.new_client = function(connection){
     // client sends us something
     connection.on('message', (message) => {
         console.log('server -- recieved message: ', message);
-        var input = message.utf8Data;
+        var input = JSON.parse(message.utf8Data);
         if(!('type' in input)){
             console.log('bad message :(');
             return;
