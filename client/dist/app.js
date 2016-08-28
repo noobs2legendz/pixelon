@@ -120,7 +120,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'Game Game_Color_' + color },
-	            _react2.default.createElement(_grid2.default, null)
+	            _react2.default.createElement(_grid2.default, { color: color })
 	          )
 	        )
 	      );
@@ -39315,6 +39315,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var PLAYER_COLORS = ['red', 'blue', 'green', 'orange'];
+
 	var Grid = function (_Component) {
 	  _inherits(Grid, _Component);
 
@@ -39327,6 +39329,8 @@
 	    var isDebug = function isDebug() {
 	      return window.location.href.search("[?&]debug") !== -1;
 	    };
+	    var color = props.color;
+
 	    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
 	    connection.onmessage = function (message) {
 	      var parsedData = JSON.parse(message.data);
@@ -39334,19 +39338,34 @@
 	      var player = parsedData.player;
 	      // const cells = _.values(json);
 	      var newGrid = _.clone(_this.state.grid);
+	      var players = _this.state.players;
+
 	      for (var key in moves) {
 	        var position = key.split('|');
 	        var move = moves[key];
-	        // console.log(position)
+
+	        // add player to game
+	        if (typeof players[move.p] === 'undefined') {
+	          if (player !== move.p) {
+	            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+	          } else {
+	            players[player] = color;
+	          }
+	        }
+
 	        if (position[0] >= 0 && position[1] >= 0) {
 	          if (typeof newGrid[position[1]] !== 'undefined' && typeof newGrid[position[1]][position[0]] !== 'undefined') {
 	            newGrid[position[1]][position[0]] = move;
 	          }
 	        }
 	      }
+
+	      console.log('players', players);
+
 	      _this.setState({
 	        grid: newGrid,
-	        player: player
+	        player: player,
+	        players: players
 	      });
 	      // _.each(cells[0], (cell) => {
 	      // })
@@ -39363,7 +39382,8 @@
 	    }
 	    _this.state = {
 	      grid: grid,
-	      connection: connection
+	      connection: connection,
+	      players: {}
 	    };
 	    return _this;
 	  }
@@ -39392,12 +39412,15 @@
 	      var _props = this.props;
 	      var items = _props.items;
 	      var addItem = _props.addItem;
-	      var grid = this.state.grid;
+	      var _state = this.state;
+	      var grid = _state.grid;
+	      var player = _state.player;
+	      var players = _state.players;
 
 	      var rows = [];
 	      _.each(grid, function (row, index) {
 	        console.log(row.length);
-	        rows.push(_react2.default.createElement(_row2.default, { cells: row }));
+	        rows.push(_react2.default.createElement(_row2.default, { player: player, cells: row, players: players }));
 	      });
 	      return _react2.default.createElement(
 	        'div',
@@ -39452,11 +39475,14 @@
 	  _createClass(Row, [{
 	    key: 'render',
 	    value: function render() {
-	      var cells = this.props.cells;
+	      var _props = this.props;
+	      var cells = _props.cells;
+	      var player = _props.player;
+	      var players = _props.players;
 
 	      var cellComponents = [];
 	      _.each(cells, function (cell) {
-	        cellComponents.push(_react2.default.createElement(_cell2.default, { cell: cell }));
+	        cellComponents.push(_react2.default.createElement(_cell2.default, { player: player, players: players, cell: cell }));
 	      });
 	      return _react2.default.createElement(
 	        'div',
@@ -39508,17 +39534,24 @@
 	  _createClass(Cell, [{
 	    key: 'render',
 	    value: function render() {
-	      var cell = this.props.cell;
+	      var _props = this.props;
+	      var cell = _props.cell;
+	      var player = _props.player;
+	      var players = _props.players;
 
 	      var classes = "Grid_Cell";
 	      if (cell && !!cell.p) {
 	        classes = classes + ' Grid_Cell_Occupied';
 	      }
-	      return _react2.default.createElement(
-	        'div',
-	        { className: classes },
-	        cell && cell.p
-	      );
+	      if (cell && !!cell.p && cell.p === player) {
+	        classes = classes + ' Grid_Cell_Owner';
+	        classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
+	      } else {
+	        if (cell && players[cell.p]) {
+	          classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
+	        }
+	      }
+	      return _react2.default.createElement('div', { className: classes });
 	    }
 	  }]);
 

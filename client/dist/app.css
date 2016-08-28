@@ -282,5 +282,24 @@ body {
   left: 8px;
 }
 .Grid_Cell_Occupied {
+  background: #fff;
+}
+.Grid_Cell_Occupied_Color_blue {
+  background: #4646FF;
+  box-shadow: 0px 0px 50px 0px #4646FF, inset 0px 0px 50px 0px #4646FF;
+}
+.Grid_Cell_Occupied_Color_orange {
+  background: #FF9646;
+  box-shadow: 0px 0px 50px 0px #FF9646, inset 0px 0px 50px 0px #FF9646;
+}
+.Grid_Cell_Occupied_Color_green {
   background: #64FF64;
+  box-shadow: 0px 0px 50px 0px #64FF64, inset 0px 0px 50px 0px #64FF64;
+}
+.Grid_Cell_Occupied_Color_red {
+  background: #FF4646;
+  box-shadow: 0px 0px 50px 0px #FF4646, inset 0px 0px 50px 0px #FF4646;
+}
+.Grid_Cell_Owner {
+  background: #000 !important;
 }
