@@ -1,5 +1,6 @@
 require('repl');
 // this server runs the pixelon game
+var redisClient = require('redis').createClient(process.env.REDIS_URL);
 var Pixelon = require('./server/games/pixelon');
 var pixelon_game = new Pixelon();
 // create a multiplayer game server, so we can pass it new client connections when we get them

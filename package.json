@@ -70,6 +70,7 @@
     "react-codemirror": "^0.2.6",
     "react-dom": "^15.3.0",
     "react-router": "^2.6.1",
+    "redis": "^2.6.2",
     "reduce-component": "^1.0.1",
     "sequelize": "^3.23.6",
     "superagent": "^1.8.3",
