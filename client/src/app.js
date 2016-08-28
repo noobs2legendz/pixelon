@@ -124,11 +124,14 @@ class App extends Component {
      }
      return grid;
    }
+
    setName (name) {
     this.setState({
       name,
     })
    }
+
+
 
 
   render () {
@@ -141,7 +144,7 @@ class App extends Component {
           <Highscores highscores={highscores} />
 					 <div className={`Game Game_Color_${color}`}>
            {!name
-            ? <Player setName={this.setName} />
+            ? <Player setName={this.setName} name={name} />
             : <Grid color={color} grid={grid} players={players} player={player} connection={connection} />}
 					 </div>
 				</div>

@@ -243,7 +243,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'Game Game_Color_' + color },
-	            !name ? _react2.default.createElement(_player2.default, { setName: this.setName }) : _react2.default.createElement(_grid3.default, { color: color, grid: grid, players: players, player: player, connection: connection })
+	            !name ? _react2.default.createElement(_player2.default, { setName: this.setName, name: name }) : _react2.default.createElement(_grid3.default, { color: color, grid: grid, players: players, player: player, connection: connection })
 	          )
 	        )
 	      );
@@ -39605,15 +39605,20 @@
 	      var classes = "Grid_Cell";
 	      if (cell && !!cell.p) {
 	        classes = classes + ' Grid_Cell_Occupied';
-	      }
-	      if (cell && !!cell.p && cell.p === player) {
-	        classes = classes + ' Grid_Cell_Owner';
-	        classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
-	      } else {
-	        if (cell && players[cell.p]) {
+	        if (cell.p === player) {
+	          classes = classes + ' Grid_Cell_Owner';
 	          classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
+	        } else {
+	          if (cell && players[cell.p]) {
+	            classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
+	          }
+	        }
+	        if (typeof cell.old === 'undefined') {
+	          classes = classes + ' Grid_Cell_Occupied_Head';
+	          classes = classes + ' Grid_Cell_Occupied_Head_Color_' + players[cell.p];
 	        }
 	      }
+
 	      return _react2.default.createElement('div', { className: classes });
 	    }
 	  }]);
@@ -43311,12 +43316,18 @@
 	      }
 	    }
 	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.refs.name.focus();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
 	      var cell = _props.cell;
 	      var player = _props.player;
 	      var players = _props.players;
+	      var name = _props.name;
 
 
 	      return _react2.default.createElement(
@@ -43327,7 +43338,7 @@
 	          null,
 	          'CHOOSE A NAME'
 	        ),
-	        _react2.default.createElement('input', { type: 'text', onKeyPress: this.startGame, placeholder: 'Choose your destiny' })
+	        _react2.default.createElement('input', { ref: 'name', type: 'text', onKeyPress: this.startGame, defaultValue: name, placeholder: 'Choose your destiny' })
 	      );
 	    }
 	  }]);

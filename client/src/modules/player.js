@@ -14,16 +14,17 @@ export default class Player extends Component {
       this.props.setName(name)
     }
   }
-
+  componentDidMount () {
+    this.refs.name.focus();
+  }
 
   render () {
-    const {cell, player, players} = this.props;
-
+    const {cell, player, players, name} = this.props;
 
     return (
       <div className="Player">
         <h2>CHOOSE A NAME</h2>
-        <input type="text" onKeyPress={this.startGame} placeholder="Choose your destiny" />
+        <input ref="name" type="text" onKeyPress={this.startGame} defaultValue={name} placeholder="Choose your destiny" />
       </div>
     );
   }

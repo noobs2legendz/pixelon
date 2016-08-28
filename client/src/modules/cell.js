@@ -5,18 +5,23 @@ export default class Cell extends Component {
     let classes = "Grid_Cell";
     if (cell && !!cell.p) {
       classes = classes + ' Grid_Cell_Occupied'
-    }
-    if (cell && !!cell.p && cell.p === player) {
-      classes = classes + ' Grid_Cell_Owner'
-      classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
-    } else {
-      if (cell && players[cell.p]) {
+      if (cell.p === player) {
+        classes = classes + ' Grid_Cell_Owner'
         classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
+      } else {
+        if (cell && players[cell.p]) {
+          classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
+        }
+      }
+      if (typeof cell.old === 'undefined') {
+        classes = classes + ' Grid_Cell_Occupied_Head';
+        classes = classes + ' Grid_Cell_Occupied_Head_Color_' + players[cell.p];
       }
     }
+
     return (
       <div className={classes}>
-        
+
       </div>
     );
   }
