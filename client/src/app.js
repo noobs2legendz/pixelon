@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-
+import each from 'lodash/each';
 import Grid from './modules/grid';
 import Player from './modules/player';
 import Highscores from './modules/highscores';
@@ -23,6 +23,8 @@ class App extends Component {
      // Otherwise they will inherit the normal event arguments
      super(props, context);
      this.setName = this.setName.bind(this);
+     this.generateGrid = this.generateGrid.bind(this);
+
      window.WebSocket = window.WebSocket || window.MozWebSocket;
      var isDebug = function(){
        return window.location.href.search("[?&]debug") !== -1;
@@ -39,6 +41,8 @@ class App extends Component {
        var newGrid = _.clone(this.state.grid);
        const {players} = this.state;
 
+       let dead = false;
+
        if(events.length > 0) {
          console.log(events);
          each(events, (event) => {
@@ -46,13 +50,24 @@ class App extends Component {
              each(event.pos, (pos) => {
                newGrid[pos.y][pos.x] = null;
              })
-             if (event.death*1 === player) {
+             if (true || event.death*1 === player) {
+               dead = true;
                this.setName(null);
              }
            }
          })
        }
-
+       if (dead) {
+         // Short circuit the websockets listener
+         const grid = this.generateGrid();
+         this.setState({
+           grid,
+           player: null,
+           color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
+           players: null,
+         })
+         return false;
+       }
        for (var key in moves) {
          const position = key.split('|');
          const move = moves[key];
@@ -82,16 +97,7 @@ class App extends Component {
        // _.each(cells[0], (cell) => {
        // })
      };
-     var grid = [];
-     var GRID_HEIGHT = 20;
-     var GRID_WIDTH = 78;
-     for(var i = 0; i < GRID_HEIGHT; i++) {
-       var row = [];
-       for(var a = 0; a < GRID_WIDTH; a++) {
-         row.push(null)
-       }
-       grid.push(row);
-     }
+     const grid = this.generateGrid();
      this.state = {
        grid,
        connection,
@@ -105,7 +111,19 @@ class App extends Component {
        }
      }
    }
-
+   generateGrid () {
+     var grid = [];
+     var GRID_HEIGHT = 20;
+     var GRID_WIDTH = 78;
+     for(var i = 0; i < GRID_HEIGHT; i++) {
+       var row = [];
+       for(var a = 0; a < GRID_WIDTH; a++) {
+         row.push(null)
+       }
+       grid.push(row);
+     }
+     return grid;
+   }
    setName (name) {
     this.setState({
       name,

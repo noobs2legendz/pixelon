@@ -60,9 +60,13 @@
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
-	var _grid = __webpack_require__(175);
+	var _each = __webpack_require__(179);
 
-	var _grid2 = _interopRequireDefault(_grid);
+	var _each2 = _interopRequireDefault(_each);
+
+	var _grid2 = __webpack_require__(175);
+
+	var _grid3 = _interopRequireDefault(_grid2);
 
 	var _player = __webpack_require__(289);
 
@@ -99,6 +103,8 @@
 
 
 	    _this.setName = _this.setName.bind(_this);
+	    _this.generateGrid = _this.generateGrid.bind(_this);
+
 	    window.WebSocket = window.WebSocket || window.MozWebSocket;
 	    var isDebug = function isDebug() {
 	      return window.location.href.search("[?&]debug") !== -1;
@@ -117,20 +123,33 @@
 	      var players = _this.state.players;
 
 
+	      var dead = false;
+
 	      if (events.length > 0) {
 	        console.log(events);
-	        each(events, function (event) {
+	        (0, _each2.default)(events, function (event) {
 	          if (typeof event.death !== 'undefined') {
-	            each(event.pos, function (pos) {
+	            (0, _each2.default)(event.pos, function (pos) {
 	              newGrid[pos.y][pos.x] = null;
 	            });
-	            if (event.death * 1 === player) {
+	            if (true) {
+	              dead = true;
 	              _this.setName(null);
 	            }
 	          }
 	        });
 	      }
-
+	      if (dead) {
+	        // Short circuit the websockets listener
+	        var _grid = _this.generateGrid();
+	        _this.setState({
+	          grid: _grid,
+	          player: null,
+	          color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
+	          players: null
+	        });
+	        return false;
+	      }
 	      for (var key in moves) {
 	        var position = key.split('|');
 	        var move = moves[key];
@@ -159,16 +178,7 @@
 	      // _.each(cells[0], (cell) => {
 	      // })
 	    };
-	    var grid = [];
-	    var GRID_HEIGHT = 20;
-	    var GRID_WIDTH = 78;
-	    for (var i = 0; i < GRID_HEIGHT; i++) {
-	      var row = [];
-	      for (var a = 0; a < GRID_WIDTH; a++) {
-	        row.push(null);
-	      }
-	      grid.push(row);
-	    }
+	    var grid = _this.generateGrid();
 	    _this.state = {
 	      grid: grid,
 	      connection: connection,
@@ -185,6 +195,21 @@
 	  }
 
 	  _createClass(App, [{
+	    key: 'generateGrid',
+	    value: function generateGrid() {
+	      var grid = [];
+	      var GRID_HEIGHT = 20;
+	      var GRID_WIDTH = 78;
+	      for (var i = 0; i < GRID_HEIGHT; i++) {
+	        var row = [];
+	        for (var a = 0; a < GRID_WIDTH; a++) {
+	          row.push(null);
+	        }
+	        grid.push(row);
+	      }
+	      return grid;
+	    }
+	  }, {
 	    key: 'setName',
 	    value: function setName(name) {
 	      this.setState({
@@ -218,7 +243,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'Game Game_Color_' + color },
-	            !name ? _react2.default.createElement(_player2.default, { setName: this.setName }) : _react2.default.createElement(_grid2.default, { color: color, grid: grid, players: players, player: player, connection: connection })
+	            !name ? _react2.default.createElement(_player2.default, { setName: this.setName }) : _react2.default.createElement(_grid3.default, { color: color, grid: grid, players: players, player: player, connection: connection })
 	          )
 	        )
 	      );
