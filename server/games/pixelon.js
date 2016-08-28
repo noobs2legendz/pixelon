@@ -158,7 +158,7 @@ Pixelon.prototype.tick = function(){
             console.log('player ' + player + ' has died by hitting the edge');
         } else if((pos.x+'|'+pos.y) in grid){
             //console.log('robin2');
-            console.log('a', grid[pos.x+'|'+pos.y]);
+            //console.log('a', grid[pos.x+'|'+pos.y]);
             if(grid[pos.x+'|'+pos.y].p == player && !('old' in grid[pos.x+'|'+pos.y])){
                 // we can't kill ourselves with our own head
             } else {
@@ -215,7 +215,7 @@ Pixelon.prototype.tick = function(){
         grid[pos.x + '|' + pos.y] = {p: player};
     }
 
-    console.log('game -- current state: ', this.state);
+    //console.log('game -- current state: ', this.state);
 }
 
 Pixelon.prototype.get_game_state = function(player){
