@@ -85,11 +85,12 @@ Pixelon.prototype.process_input = function(player, input){
         // don't go back on yourself
         //console.log(info.previous_dir);
         //console.log(new_dir);
-        //console.log(info.previous_dir in ["up", "down"] && new_dir in ["up", "down"])
         if(info.previous_dir != new_dir){
-            if( (info.previous_dir in ["up", "down"] && new_dir in ["up", "down"]) || 
-                    (info.previous_dir in ["right", "left"] && new_dir in ["right", "left"]) ){
-
+            var ud = ["up", "down"];
+            var lr = ["left", "right"];
+            var backwards = ud.indexOf(info.previous_dir) >= 0  && ud.indexOf(new_dir) >= 0;
+            backwards = backwards || (lr.indexOf(info.previous_dir) >= 0 && lr.indexOf(new_dir) >= 0);
+            if( backwards ){
                 // don't go back on yourself
             } else {
                 info.dir = new_dir;
