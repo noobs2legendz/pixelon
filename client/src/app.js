@@ -136,7 +136,7 @@ class Game extends Component {
 
 					 <div className="game">
 						 <Grid />
-						<div className="player-blue">
+						{/*<div className="player-blue">
 							 <div className="blue-head"></div>
 							 <div className="blue-tail"></div>
 						</div>
@@ -154,7 +154,7 @@ class Game extends Component {
 						<div className="player-orange">
 							 <div className="orange-head"></div>
 							 <div className="orange-tail"></div>
-						</div>
+						</div>*/}
 
 					 </div>
 				</div>

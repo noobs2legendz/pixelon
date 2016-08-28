@@ -294,31 +294,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'game' },
-	            _react2.default.createElement(Grid, null),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'player-blue' },
-	              _react2.default.createElement('div', { className: 'blue-head' }),
-	              _react2.default.createElement('div', { className: 'blue-tail' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'player-red' },
-	              _react2.default.createElement('div', { className: 'red-head' }),
-	              _react2.default.createElement('div', { className: 'red-tail' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'player-green' },
-	              _react2.default.createElement('div', { className: 'green-head' }),
-	              _react2.default.createElement('div', { className: 'green-tail' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'player-orange' },
-	              _react2.default.createElement('div', { className: 'orange-head' }),
-	              _react2.default.createElement('div', { className: 'orange-tail' })
-	            )
+	            _react2.default.createElement(Grid, null)
 	          )
 	        )
 	      );
