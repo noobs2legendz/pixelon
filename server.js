@@ -1,9 +1,9 @@
 require('repl');
 // this server runs the pixelon game
-var Pixelon = require('./pixelon');
+var Pixelon = require('./server/games/pixelon');
 var pixelon_game = new Pixelon();
 // create a multiplayer game server, so we can pass it new client connections when we get them
-MultiplayerGameServer = require('./multiplayer_game_server');
+MultiplayerGameServer = require('./server/multiplayer_game_server');
 multipler_game_server = new MultiplayerGameServer(pixelon_game);
 
 // create base HTTP server to pass to the websocket server
