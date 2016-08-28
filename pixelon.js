@@ -16,6 +16,7 @@ function Pixelon(){
         grid: {},
         player_info: {},
         iteration: 0,
+        events: [],
         // new_events: {}, 
     }
 
@@ -59,14 +60,18 @@ Pixelon.prototype.new_player = function(){
 }
 
 Pixelon.prototype.process_input = function(player, input){
-    console.log('game -- recieved input: ', input);
-    //if("direction" in input){
-    this.state.player_info[player].dir = input;
-    //}
+    console.log('game -- recieved input from player ' + player + ': ', input);
+    //if("direction" in input){  ??? 
+    if(player in this.state.player_info){
+        this.state.player_info[player].dir = input;
+    } else {
+        // dead player has no input
+    }
 }
 
 Pixelon.prototype.tick = function(){
     console.log('game -- tick');
+    this.state.events = [];
     // update any blocks that are disappearing first, as we need 
     // don't want to give advantage to the players due to their list order
     
@@ -141,6 +146,10 @@ Pixelon.prototype.tick = function(){
     dead_players.forEach((dead_player) => {
         console.log('game -- player ' + dead_player + ' has died!');
         var grid = this.state.grid;
+
+        // TODO add event to only relevent players
+        this.state.events.push({'death': dead_player});
+
         for(var gridspot in grid){
             if(grid[gridspot].p == dead_player){
                 delete grid[gridspot];
@@ -163,6 +172,8 @@ Pixelon.prototype.get_game_state = function(player){
     return {
         grid: this.state.grid,
         time: this.state.iteration,
+        events: this.state.events
+
     }
 }
 
