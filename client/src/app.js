@@ -52,9 +52,9 @@ class Grid extends Component {
     super(props, context);
     window.WebSocket = window.WebSocket || window.MozWebSocket;
     var isDebug = function(){
-      return window.location.href.search("[?&]debug") != -1;
+      return window.location.href.search("[?&]debug") !== -1;
     };
-    var connection = new WebSocket(!isDebug ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
+    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
     connection.onmessage = (message) => {
       var moves = JSON.parse(message.data).grid;
       // const cells = _.values(json);

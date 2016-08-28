@@ -153,9 +153,9 @@
 
 	    window.WebSocket = window.WebSocket || window.MozWebSocket;
 	    var isDebug = function isDebug() {
-	      return window.location.href.search("[?&]debug") != -1;
+	      return window.location.href.search("[?&]debug") !== -1;
 	    };
-	    var connection = new WebSocket(!isDebug ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
+	    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
 	    connection.onmessage = function (message) {
 	      var moves = JSON.parse(message.data).grid;
 	      // const cells = _.values(json);
