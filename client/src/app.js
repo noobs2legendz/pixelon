@@ -50,7 +50,6 @@ class App extends Component {
              })
              if (event.death*1 === player*1) {
                dead = true;
-               this.setName(null);
              }
            }
          })
@@ -60,6 +59,7 @@ class App extends Component {
          const grid = this.generateGrid();
          this.setState({
            grid,
+           name: null,
            player: null,
            color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
            players: {},

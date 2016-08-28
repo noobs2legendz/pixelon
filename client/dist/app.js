@@ -131,7 +131,6 @@
 	            });
 	            if (event.death * 1 === player * 1) {
 	              dead = true;
-	              _this.setName(null);
 	            }
 	          }
 	        });
@@ -141,6 +140,7 @@
 	        var _grid = _this.generateGrid();
 	        _this.setState({
 	          grid: _grid,
+	          name: null,
 	          player: null,
 	          color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
 	          players: {}
