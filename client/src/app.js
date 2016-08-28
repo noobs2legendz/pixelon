@@ -29,7 +29,6 @@ class App extends Component {
      var isDebug = function(){
        return window.location.href.search("[?&]debug") !== -1;
      };
-     var {color} = props;
      var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
      window.connection = connection;
      connection.onmessage = (message) => {
@@ -44,7 +43,6 @@ class App extends Component {
        let dead = false;
 
        if(events.length > 0) {
-         console.log(events);
          each(events, (event) => {
            if (typeof event.death !== 'undefined') {
              each(event.pos, (pos) => {
@@ -64,7 +62,7 @@ class App extends Component {
            grid,
            player: null,
            color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
-           players: null,
+           players: {},
          })
          return false;
        }
@@ -74,10 +72,10 @@ class App extends Component {
 
          // add player to game
          if (typeof players[move.p] === 'undefined') {
-           if (player !== move.p) {
+           if (player*1 !== move.p*1) {
              players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
            } else {
-             players[player] = color;
+             players[player] = this.state.color;
            }
 
          }
@@ -88,7 +86,6 @@ class App extends Component {
            }
          }
        }
-
        this.setState({
          grid: newGrid,
          player,

@@ -109,8 +109,6 @@
 	    var isDebug = function isDebug() {
 	      return window.location.href.search("[?&]debug") !== -1;
 	    };
-	    var color = props.color;
-
 	    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
 	    window.connection = connection;
 	    connection.onmessage = function (message) {
@@ -126,7 +124,6 @@
 	      var dead = false;
 
 	      if (events.length > 0) {
-	        console.log(events);
 	        (0, _each2.default)(events, function (event) {
 	          if (typeof event.death !== 'undefined') {
 	            (0, _each2.default)(event.pos, function (pos) {
@@ -146,7 +143,7 @@
 	          grid: _grid,
 	          player: null,
 	          color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
-	          players: null
+	          players: {}
 	        });
 	        return false;
 	      }
@@ -156,10 +153,10 @@
 
 	        // add player to game
 	        if (typeof players[move.p] === 'undefined') {
-	          if (player !== move.p) {
+	          if (player * 1 !== move.p * 1) {
 	            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
 	          } else {
-	            players[player] = color;
+	            players[player] = _this.state.color;
 	          }
 	        }
 
@@ -169,7 +166,6 @@
 	          }
 	        }
 	      }
-
 	      _this.setState({
 	        grid: newGrid,
 	        player: player,
@@ -39603,9 +39599,9 @@
 	      var players = _props.players;
 
 	      var classes = "Grid_Cell";
-	      if (cell && !!cell.p) {
+	      if (cell && !!cell.p * 1) {
 	        classes = classes + ' Grid_Cell_Occupied';
-	        if (cell.p === player) {
+	        if (cell.p * 1 === player * 1) {
 	          classes = classes + ' Grid_Cell_Owner';
 	          classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
 	        } else {

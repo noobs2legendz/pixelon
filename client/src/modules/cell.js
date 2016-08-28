@@ -3,9 +3,9 @@ export default class Cell extends Component {
   render () {
     const {cell, player, players} = this.props;
     let classes = "Grid_Cell";
-    if (cell && !!cell.p) {
+    if (cell && !!cell.p*1) {
       classes = classes + ' Grid_Cell_Occupied'
-      if (cell.p === player) {
+      if (cell.p*1 === player*1) {
         classes = classes + ' Grid_Cell_Owner'
         classes = classes + ' Grid_Cell_Occupied_Color_' + players[cell.p];
       } else {
