@@ -33,6 +33,7 @@ MulticlientGameServer.prototype.new_client = function(connection){
     var self = this;
 
     var client_name = this.game.new_player(); // TODO move this shortly
+    console.log('server -- new client: ' + client_name);
 
     // create links from name to connection and visa versa
     this.clients[client_name] = connection;
@@ -40,7 +41,8 @@ MulticlientGameServer.prototype.new_client = function(connection){
 
     // client sends us something
     connection.on('message', function(message){
-        var input = JSON.stringify(message);
+        console.log('server -- recieved message: ', message);
+        var input = message.utf8Data;
         // TODO move game new client to here, via:
         // if join game in input
         //   name = message['name']

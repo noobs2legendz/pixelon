@@ -30,14 +30,20 @@ function Pixelon(){
 
 Pixelon.prototype.new_player = function(){
     var player_name = this.arbitrary_number_for_names++;
+    console.log('game -- created new player name: ' + player_name);
 
     // generate starting square
-    var [x, y] = [0, 0];
+    var x = Math.floor(3+Math.random()*this.size_x-3);
+    var y = Math.floor(3+Math.random()*this.size_y-3);
     var loop_counter = 0;
     do {
-        x = Math.floor(Math.random(3, this.size_x-3))
-        y = Math.floor(Math.random(3, this.size_y-3))
+        x = Math.floor(3+Math.random()*this.size_x-3);
+        y = Math.floor(3+Math.random()*this.size_y-3);
+
+        // don't go forever looking for a position, fail sometime
+        loop_counter++;
         if(loop_counter > 100){
+            console.log('game -- failed to find a valid starting position');
             return;  // this will probably make everything fail
         }
     } while(this._grid_spot_taken(x, y));
@@ -48,20 +54,34 @@ Pixelon.prototype.new_player = function(){
         pos: {x: x, y: y},
     };
 
+    console.log('game -- created new player with info: ', this.state.player_info[player_name]);
     return player_name;
 }
 
 Pixelon.prototype.process_input = function(player, input){
+    console.log('game -- recieved input: ', input);
     //if("direction" in input){
-        this.state.player_info[player].dir = input.utf8Data;
+    this.state.player_info[player].dir = input.utf8Data;
     //}
 }
 
 Pixelon.prototype.tick = function(){
+    console.log('game -- tick');
     // update any blocks that are disappearing first, as we need 
     // don't want to give advantage to the players due to their list order
+    
+    //console.log('robin');
+    // update the grid
+    //  1) for old player locations
+    for(var player in this.state.player_info){
+        var info = this.state.player_info[player];
+        var pos = info.pos;
+        //console.log(pos);
+        var grid = this.state.grid;
+        grid[pos.x + '|' + pos.y] = {p: player, old: true};
+    }
 
-    // update all not dead players positons, and kill them if they hit anything
+    // update all not dead players positons
     for(var player in this.state.player_info){
         var info = this.state.player_info[player];
         
@@ -77,10 +97,21 @@ Pixelon.prototype.tick = function(){
         } else if(dir == "left"){
             pos.x--;
         }
-
-        // kill the player if their position is bad
-        // TODO
     }
+
+    // process player deaths if their position is bad
+    // TODO
+
+    // update the grid
+    //  1) for new player locations
+    for(var player in this.state.player_info){
+        var info = this.state.player_info[player];
+        var pos = info.pos;
+        var grid = this.state.grid;
+        grid[pos.x + '|' + pos.y] = {p: player};
+    }
+
+    //console.log('game -- current state: ', this.state);
 }
 
 Pixelon.prototype.get_game_state = function(player){
