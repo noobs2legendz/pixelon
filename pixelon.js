@@ -99,11 +99,48 @@ Pixelon.prototype.tick = function(){
         }
     }
 
-    // process player deaths if their position is bad
-    // TODO
+    // process player deaths if their position is bad or whatever
+    for(var player in this.state.player_info){
+        var dead = false;
+
+        var info = this.state.player_info[player];
+        var pos = info.pos;
+        var grid = this.state.grid;
+
+        // is position is taken in the grid, dead
+        //console.log(pos.x < 0 || pos.x >= this.size_x || pos.y < 0 || pos.x >= this.size_y);
+        //console.log('fuck', pos.y, this.size_y);
+        if(pos.x < 0 || pos.x >= this.size_x || pos.y < 0 || pos.y >= this.size_y){
+            dead = true;
+        } else if(pos.x+'|'+pos.y in grid){
+            dead = true;
+        }
+
+        if(dead){
+            info.dead = true;
+        }
+    }
 
     // update the grid
-    //  1) for new player locations
+    //  1) remove dead players
+    dead_players = []
+    for(var player in this.state.player_info){
+        var info = this.state.player_info[player];
+        if('dead' in info){
+            dead_players.push(player);
+        }
+    }
+    for(var dead_player in dead_players){
+        console.log('player ' + player + ' has died!');
+        var grid = this.state.grid;
+        for(var gridspot in grid){
+            if(grid[gridspot].p == player){
+                delete grid[gridspot];
+            }
+        }
+        delete this.state.player_info[dead_player];
+    }
+    //  2) new player locations
     for(var player in this.state.player_info){
         var info = this.state.player_info[player];
         var pos = info.pos;
