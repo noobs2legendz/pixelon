@@ -7,6 +7,20 @@ module.exports = Pixelon;
 //  4) method: new_player()  // TODO player name is parameter, not return value of
 //  5) method: get_game_state(player)
 
+debugging = false;
+for(var i=2; i<process.argv.length; i++){
+    var arg = process.argv[i];
+    if(arg.indexOf('debugging') > -1){
+        debugging = true;
+    }
+}
+
+function debug(...args){
+    if(debugging == true){
+        console.log(args);
+    }
+}
+
 function Pixelon(){
     // time interval between game ticks
     this.game_speed = 500;
@@ -170,6 +184,7 @@ Pixelon.prototype.tick = function(){
 
 Pixelon.prototype.get_game_state = function(player){
     return {
+        player: player,
         grid: this.state.grid,
         time: this.state.iteration,
         events: this.state.events
