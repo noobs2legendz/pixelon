@@ -65,7 +65,7 @@ Pixelon.prototype.new_player = function(){
 
     // create the players info
     this.state.player_info[player_name] = {
-        dir: "up",
+        dir: false,
         pos: {x: x, y: y},
     };
 
@@ -133,10 +133,12 @@ Pixelon.prototype.tick = function(){
         if(pos.x < 0 || pos.x >= this.size_x || pos.y < 0 || pos.y >= this.size_y){
             //console.log('robin1');
             dead = true;
-        } else if((pos.x+'|'+pos.y) in grid && grid[pos.x+'|'+pos.y]){
+        } else if((pos.x+'|'+pos.y) in grid){
             //console.log('robin2');
             //console.log('a', grid[pos.x+'|'+pos.y]);
-            dead = true;
+            if(grid[pos.x+'|'+pos.y].p == player && !('old' in grid[pos.x+'|'+pos.y])){
+                dead = true;
+            }
         }
         //console.log('b', grid[pos.x+'|'+pos.y]);
 
