@@ -20,8 +20,8 @@ function Pixelon(){
     }
 
     // TODO remove this I think
-    this.size_x = 62;
-    this.size_y = 24;
+    this.size_x = 78;
+    this.size_y = 20;
 
     // TODO remove this damn thing
     this.arbitrary_number_for_names = 0;
