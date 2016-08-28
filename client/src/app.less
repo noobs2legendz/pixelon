@@ -1,0 +1,359 @@
+
+// Colors
+@color-blue: #4646FF;
+@color-orange: #FF9646;
+@color-red: #FF4646;
+@color-green: #64FF64;
+
+body{
+  background-color: #0A0A3C;
+  margin: 0px;
+}
+#game {
+
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.Game {
+  padding: 20px;
+  &_Color_blue {
+    border: @color-blue 1px solid;
+    color: @color-blue;
+    box-shadow: 0px 0px 50px 0px @color-blue, inset 0px 0px 50px 0px @color-blue;
+  }
+  &_Color_orange {
+    border: @color-orange 1px solid;
+    color: @color-orange;
+    box-shadow: 0px 0px 50px 0px @color-orange, inset 0px 0px 50px 0px @color-orange;
+  }
+  &_Color_green {
+    border: @color-green 1px solid;
+    color: @color-green;
+    box-shadow: 0px 0px 50px 0px @color-green, inset 0px 0px 50px 0px @color-green;
+  }
+  &_Color_red {
+    border: @color-red 1px solid;
+    color: @color-red;
+    box-shadow: 0px 0px 50px 0px @color-red, inset 0px 0px 50px 0px @color-red;
+  }
+}
+.App {
+  &_Color_blue {
+    .currentHS{
+      background-color: @color-blue;
+      box-shadow: 0px 0px 50px 0px @color-blue;
+    }
+  }
+  &_Color_orange {
+    .currentHS{
+      background-color: @color-orange;
+      box-shadow: 0px 0px 50px 0px @color-orange;
+    }
+  }
+  &_Color_green {
+    .currentHS{
+      background-color: @color-green;
+      box-shadow: 0px 0px 50px 0px @color-green;
+    }
+  }
+  &_Color_red {
+    .currentHS{
+      background-color: @color-red;
+      box-shadow: 0px 0px 50px 0px @color-red;
+    }
+  }
+}
+.logo-container{
+text-align: center;
+padding-top: 45px;
+color: white;
+font-family: 'Roboto Mono', monospace;
+margin:0px;
+}
+
+.logo {
+/*box-shadow: 0px 0px 50px 0px rgba(0,0,255,0.8);*/
+opacity: 0.666;
+
+}
+
+.container{
+padding-left: 80px;
+padding-right: 80px;
+width: 1602px;
+margin: auto;
+}
+
+
+/* Current HS Div */
+
+.currentHS{
+display: inline-block;
+background-color: #4646ff;
+width: auto;
+height: auto;
+
+box-shadow: 0px 0px 50px 0px rgba(0,0,255,0.5);
+}
+
+.currentName{
+font-family: 'Roboto Mono', monospace;
+font-weight: 300;
+font-size: 14px;
+line-height: 19px;
+letter-spacing: 0.3;
+text-transform: uppercase;
+color: white;
+
+padding-left: 20px;
+padding-top: 20px;
+
+text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+}
+
+.currentScore{
+font-family: 'Roboto Mono', monospace;
+color: white;
+font-size: 28px;
+font-weight: 700;
+line-height: 37px;
+
+padding-left: 20px;
+padding-right: 60px;
+padding-bottom: 20px;
+
+text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+}
+
+/* End Current HS Div */
+
+/* Previous HS Div */
+
+.previousHS{
+display: inline-block;
+width: auto;
+height: auto;
+}
+
+.previousName{
+font-family: 'Roboto Mono', monospace;
+font-weight: 300;
+font-size: 14px;
+line-height: 19px;
+letter-spacing: 0.3;
+text-transform: uppercase;
+color: white;
+
+padding-left: 30px;
+padding-top: 20px;
+
+text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+}
+
+.previousScore{
+font-family: 'Roboto Mono', monospace;
+color: white;
+font-size: 28px;
+font-weight: 700;
+line-height: 37px;
+
+padding-left: 30px;
+padding-right: 60px;
+padding-bottom: 20px;
+
+text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+}
+
+/* End Previous HS Div */
+
+/* Server HS Div */
+
+.serverHS{
+display: inline-block;
+width: auto;
+height: auto;
+float: right;
+text-align: right;
+}
+
+.serverName{
+font-family: 'Roboto Mono', monospace;
+font-weight: 300;
+font-size: 14px;
+line-height: 19px;
+letter-spacing: 0.3;
+text-transform: uppercase;
+color: white;
+
+padding-left: 20px;
+padding-top: 20px;
+padding-top: 20px;
+
+text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+}
+
+.serverScore{
+font-family: 'Roboto Mono', monospace;
+color: white;
+font-size: 28px;
+font-weight: 700;
+line-height: 37px;
+
+padding-left: 20px;
+padding-right: 0px;
+padding-bottom: 20px;
+
+text-shadow: 0px 0px 5px rgba(255,255,255,0.8);
+}
+
+/* End Server HS Div */
+
+/* Game Border */
+
+
+
+/* Player – Blue */
+
+.blue-head {
+position: relative;
+display: block;
+border-radius: 6px;
+background-color: #0000ff;
+left: 194px;
+top: 120px;
+height: 12px;
+width: 12px;
+border: rgba(255,255,255,0.666) 3px solid;
+box-shadow: 0px 0px 10px 0px #0000ff;
+}
+
+.blue-tail {
+position: relative;
+display: block;
+margin-top: -15px;
+border-radius: 6px;
+left: 200px;
+top: 120px;
+height: 150px;
+width: 0px;
+border: #0000FF 3px solid;
+box-shadow: 0px 0px 10px 0px #0000ff;
+}
+
+/* END Blue */
+
+/* Player – Red */
+
+.red-head {
+position: relative;
+display: block;
+border-radius: 6px;
+background-color: #FF4646;
+left: 394px;
+top: 0px;
+height: 12px;
+width: 12px;
+border: rgba(255,255,255,0.666) 3px solid;
+box-shadow: 0px 0px 10px 0px #FF4646;
+}
+
+.red-tail {
+position: relative;
+display: block;
+margin-top: -15px;
+border-radius: 6px;
+left: 400px;
+top: 0px;
+height: 150px;
+width: 0px;
+border: #FF4646 3px solid;
+box-shadow: 0px 0px 10px 0px #FF4646;
+}
+
+/* END red */
+
+/* Player – Green */
+
+.green-head {
+position: relative;
+display: block;
+border-radius: 6px;
+background-color: #64FF64;
+left: 594px;
+top: -200px;
+height: 12px;
+width: 12px;
+border: rgba(255,255,255,0.666) 3px solid;
+box-shadow: 0px 0px 10px 0px #64FF64;
+}
+
+.green-tail {
+position: relative;
+display: block;
+margin-top: -15px;
+border-radius: 6px;
+left: 600px;
+top: -200px;
+height: 150px;
+width: 0px;
+border: #64FF64 3px solid;
+box-shadow: 0px 0px 10px 0px #64FF64;
+}
+
+/* END Green */
+
+/* Player – Orange */
+
+.orange-head {
+position: relative;
+display: block;
+border-radius: 6px;
+background-color: #FF9646;
+left: 794px;
+top: -300px;
+height: 12px;
+width: 12px;
+border: rgba(255,255,255,0.666) 3px solid;
+box-shadow: 0px 0px 10px 0px #FF9646;
+}
+
+.orange-tail {
+position: relative;
+display: block;
+margin-top: -15px;
+border-radius: 6px;
+left: 800px;
+top: -300px;
+height: 150px;
+width: 0px;
+border: #FF9646 3px solid;
+box-shadow: 0px 0px 10px 0px #FF9646;
+}
+
+/* END Orange */
+
+.Grid_Cell {
+float: left;
+width: 20px;
+height: 20px;
+position: relative;
+}
+.Grid_Cell:before {
+content: '';
+width: 3px;
+height: 3px;
+background: #fff;
+display: block;
+margin: auto;
+border-radius: 6px;
+opacity: 0.2;
+position: absolute;
+top: 8px;
+left: 8px;
+}
+.Grid_Row {
+}
+.Grid_Cell_Occupied {
+background: #64FF64;
+}
