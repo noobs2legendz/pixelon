@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Mousetrap from 'mousetrap';
+import each from 'lodash/each';
 
 import Row from './row';
 const PLAYER_COLORS = [
@@ -20,10 +21,23 @@ export default class Grid extends Component {
     connection.onmessage = (message) => {
       var parsedData = JSON.parse(message.data);
       var moves = parsedData.grid;
+      var events = parsedData.events;
       var player = parsedData.player;
       // const cells = _.values(json);
       var newGrid = _.clone(this.state.grid);
       const {players} = this.state;
+
+      if(events.length > 0) {
+        console.log(events);
+        each(events, (event) => {
+          if (typeof event.death !== 'undefined') {
+            each(event.pos, (pos) => {
+              newGrid[pos.y][pos.x] = null;
+            })
+          }
+        })
+      }
+
       for (var key in moves) {
         const position = key.split('|');
         const move = moves[key];
@@ -45,7 +59,6 @@ export default class Grid extends Component {
         }
       }
 
-      console.log('players', players);
 
       this.setState({
         grid: newGrid,
@@ -91,7 +104,6 @@ export default class Grid extends Component {
     const {grid, player, players} = this.state;
     const rows = [];
     _.each(grid, function (row, index) {
-      console.log(row.length)
       rows.push(<Row player={player} cells={row} players={players} />);
     });
     return (<div>
