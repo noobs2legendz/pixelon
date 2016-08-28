@@ -1,7 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Mousetrap from 'mousetrap';
+import _ from 'lodash';
 
   const {Component} = React; // import {Component} from 'react';
   const {map} = _; // import {map} from 'lodash'
-
+console.log('horah')
 // var c = document.getElementById("myCanvas");
 
 class Cell extends Component {
@@ -100,10 +104,10 @@ class Grid extends Component {
     </div>);
   }
 }
-class Game extends Component {
+class App extends Component {
   render () {
     return (
-			<div className="Game">
+			<div className="App">
 				<div className="logo-container"><img className="logo"src="pixelon.svg" alt="pixelon" /></div>
 
 				<div className="container">
@@ -130,9 +134,9 @@ class Game extends Component {
 
 					 </div>
 
-					 <div className="game">
+					 <div className="Game">
 						 <Grid />
-						<div className="player-blue">
+						{/*<div className="player-blue">
 							 <div className="blue-head"></div>
 							 <div className="blue-tail"></div>
 						</div>
@@ -150,7 +154,7 @@ class Game extends Component {
 						<div className="player-orange">
 							 <div className="orange-head"></div>
 							 <div className="orange-tail"></div>
-						</div>
+						</div>*/}
 
 					 </div>
 				</div>
@@ -158,6 +162,6 @@ class Game extends Component {
     );
   }
 }
-ReactDOM.render(<Game />,
-     document.getElementById('game')
+ReactDOM.render(<App />,
+     document.getElementById('app')
    );
