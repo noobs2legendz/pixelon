@@ -23,7 +23,7 @@ function debug(...args){
 
 function Pixelon(){
     // time interval between game ticks
-    this.game_speed = 500;
+    this.game_speed = process.env.GAME_SPEED || 200;
 
     // game state
     this.state = {
