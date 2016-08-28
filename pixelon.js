@@ -44,7 +44,7 @@ function Pixelon(){
 }
 
 
-Pixelon.prototype.new_player = function(){
+Pixelon.prototype.new_player = function(real_name){
     var player_name = this.arbitrary_number_for_names++;
     console.log('game -- created new player name: ' + player_name);
 
@@ -66,6 +66,7 @@ Pixelon.prototype.new_player = function(){
 
     // create the players info
     this.state.player_info[player_name] = {
+        name: real_name,
         previous_dir: false,
         dir: false,
         pos: {x: x, y: y},

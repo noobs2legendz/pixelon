@@ -30,27 +30,34 @@ MulticlientGameServer.prototype.main_loop = function(){
 }
 
 MulticlientGameServer.prototype.new_client = function(connection){
-    var self = this;
-
-    var client_name = this.game.new_player(); // TODO move this shortly
-    console.log('server -- new client: ' + client_name);
+    console.log('server -- new client: ' + connection.remoteAddress);
 
     // create links from name to connection and visa versa
-    this.clients[client_name] = connection;
-    connection.client_name = client_name;
 
     // client sends us something
-    connection.on('message', function(message){
+    connection.on('message', (message) => {
         console.log('server -- recieved message: ', message);
         var input = message.utf8Data;
-        // TODO move game new client to here, via:
-        // if join game in input
-        //   name = message['name']
-        //   if name taken:
-        //      connection.sendUTF8(...)
-        //   this.game.new_client
-        // else
-        self.game.process_input(client_name, input);
+        if(!(type in input)){
+            console.log('bad message :(');
+            return;
+        } else {
+            if(input.type == 'start'){
+                // start a new game with the given name
+                var client_name = this.game.new_player(input.name); // TODO move this shortly
+                this.clients[client_name] = connection;
+                connection.client_name = client_name;
+                
+                // give the client an immediate update
+                this.update_client(client_name);
+            } else {
+                // TODO remove this from server code
+                dir = input.direction;
+                
+                // if it's not a server input, pass it to the game
+                this.game.process_input(client_name, dir);
+            }
+        }
     });
 
     // client leaves ...
@@ -58,8 +65,6 @@ MulticlientGameServer.prototype.new_client = function(connection){
         self.client_leaves(client_name);
     });
 
-    // give the client an immediate update
-    this.update_client(client_name);
 }
 
 MulticlientGameServer.prototype.client_leaves = function(connection){
