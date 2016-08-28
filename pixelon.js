@@ -61,7 +61,7 @@ Pixelon.prototype.new_player = function(){
 Pixelon.prototype.process_input = function(player, input){
     console.log('game -- recieved input: ', input);
     //if("direction" in input){
-    this.state.player_info[player].dir = input.utf8Data;
+    this.state.player_info[player].dir = input;
     //}
 }
 
@@ -93,11 +93,12 @@ Pixelon.prototype.tick = function(){
         } else if(dir == "down"){
             pos.y++;
         } else if(dir == "right"){
-            pos.x--;
-        } else if(dir == "left"){
             pos.x++;
+        } else if(dir == "left"){
+            pos.x--;
         }
     }
+    //console.log('c', pos);
 
     // process player deaths if their position is bad or whatever
     for(var player in this.state.player_info){
@@ -111,10 +112,14 @@ Pixelon.prototype.tick = function(){
         //console.log(pos.x < 0 || pos.x >= this.size_x || pos.y < 0 || pos.x >= this.size_y);
         //console.log('fuck', pos.y, this.size_y);
         if(pos.x < 0 || pos.x >= this.size_x || pos.y < 0 || pos.y >= this.size_y){
+            //console.log('robin1');
             dead = true;
-        } else if(pos.x+'|'+pos.y in grid){
+        } else if((pos.x+'|'+pos.y) in grid && grid[pos.x+'|'+pos.y]){
+            //console.log('robin2');
+            //console.log('a', grid[pos.x+'|'+pos.y]);
             dead = true;
         }
+        //console.log('b', grid[pos.x+'|'+pos.y]);
 
         if(dead){
             info.dead = true;
