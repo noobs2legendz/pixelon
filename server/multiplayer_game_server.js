@@ -11,8 +11,7 @@ function MulticlientGameServer(game){
     this.game = game;
 
     // the interval at which the game is computed and clients are updated.
-    var self = this;
-    setInterval(function(){ self.main_loop() }, game.game_speed);
+    setInterval(() => { this.main_loop() }, game.game_speed);
     // TODO setIntervalIncludingFunctionRuntime ??? via setTimeout and new Date() I mean ???
 
     // current list of clients, {names: websocket connections}
@@ -61,8 +60,8 @@ MulticlientGameServer.prototype.new_client = function(connection){
     });
 
     // client leaves ...
-    connection.on('close', function(connection){
-        self.client_leaves(client_name);
+    connection.on('close', (connection) => {
+        this.client_leaves(client_name);
     });
 
 }
