@@ -1,7 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Mousetrap from 'mousetrap';
+import _ from 'lodash';
 
   const {Component} = React; // import {Component} from 'react';
   const {map} = _; // import {map} from 'lodash'
-
+console.log('horah')
 // var c = document.getElementById("myCanvas");
 
 class Cell extends Component {
