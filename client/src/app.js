@@ -35,7 +35,7 @@ class App extends Component {
 				<div className="container">
           <Highscores />
 					 <div className={`Game Game_Color_${color}`}>
-						 <Grid />
+						 <Grid color={color} />
 					 </div>
 				</div>
 			</div>

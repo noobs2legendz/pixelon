@@ -15,6 +15,7 @@ export default class Grid extends Component {
     var isDebug = function(){
       return window.location.href.search("[?&]debug") !== -1;
     };
+    var {color} = props;
     var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
     connection.onmessage = (message) => {
       var parsedData = JSON.parse(message.data);
@@ -29,8 +30,12 @@ export default class Grid extends Component {
 
         // add player to game
         if (typeof players[move.p] === 'undefined') {
-          players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
-          
+          if (player !== move.p) {
+            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+          } else {
+            players[player] = color;
+          }
+
         }
 
         if (position[0] >= 0 && position[1] >= 0) {

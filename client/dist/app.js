@@ -120,7 +120,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'Game Game_Color_' + color },
-	            _react2.default.createElement(_grid2.default, null)
+	            _react2.default.createElement(_grid2.default, { color: color })
 	          )
 	        )
 	      );
@@ -39329,6 +39329,8 @@
 	    var isDebug = function isDebug() {
 	      return window.location.href.search("[?&]debug") !== -1;
 	    };
+	    var color = props.color;
+
 	    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
 	    connection.onmessage = function (message) {
 	      var parsedData = JSON.parse(message.data);
@@ -39344,7 +39346,11 @@
 
 	        // add player to game
 	        if (typeof players[move.p] === 'undefined') {
-	          players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+	          if (player !== move.p) {
+	            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+	          } else {
+	            players[player] = color;
+	          }
 	        }
 
 	        if (position[0] >= 0 && position[1] >= 0) {
