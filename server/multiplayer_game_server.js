@@ -27,7 +27,7 @@ MulticlientGameServer.prototype.main_loop = function(){
     this.game.tick();
 
     // send the clients their data
-    for(var client in this.clients){
+    for(var client in this.client_player_names){
         this.update_client(client);  // we could make this only send updates
     }
 }
@@ -89,10 +89,12 @@ MulticlientGameServer.prototype.client_leaves = function(connection){
 }
 
 MulticlientGameServer.prototype.update_client = function(client){
+    //console.log('update_client');
     // we call this to send the client the current state of the game
     var socket = this.client_connections[client];
     var player_name = this.client_player_names[client];
     var game_data = this.game.get_game_state(player_name);
     game_data.player = client;
+    //console.log(game_data);
     socket.sendUTF(JSON.stringify(game_data));
 }
