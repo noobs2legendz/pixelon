@@ -89,13 +89,13 @@ Pixelon.prototype.tick = function(){
         var dir = info["dir"];
         var pos = info.pos;
         if(dir == "up"){
-            pos.y++;
-        } else if(dir == "down"){
             pos.y--;
+        } else if(dir == "down"){
+            pos.y++;
         } else if(dir == "right"){
-            pos.x++;
-        } else if(dir == "left"){
             pos.x--;
+        } else if(dir == "left"){
+            pos.x++;
         }
     }
 
