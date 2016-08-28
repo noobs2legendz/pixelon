@@ -65,6 +65,7 @@ Pixelon.prototype.new_player = function(){
 
     // create the players info
     this.state.player_info[player_name] = {
+        previous_dir: false,
         dir: false,
         pos: {x: x, y: y},
     };
@@ -75,9 +76,23 @@ Pixelon.prototype.new_player = function(){
 
 Pixelon.prototype.process_input = function(player, input){
     console.log('game -- recieved input from player ' + player + ': ', input);
+    var info = this.state.player_info[player];
     //if("direction" in input){  ??? 
     if(player in this.state.player_info){
-        this.state.player_info[player].dir = input;
+        var new_dir = input;
+        // don't go back on yourself
+        //console.log(info.previous_dir);
+        //console.log(new_dir);
+        //console.log(info.previous_dir in ["up", "down"] && new_dir in ["up", "down"])
+        if(info.previous_dir != new_dir){
+            if( (info.previous_dir in ["up", "down"] && new_dir in ["up", "down"]) || 
+                    (info.previous_dir in ["right", "left"] && new_dir in ["right", "left"]) ){
+
+                // don't go back on yourself
+            } else {
+                info.dir = new_dir;
+            }
+        }
     } else {
         // dead player has no input
     }
@@ -94,18 +109,23 @@ Pixelon.prototype.tick = function(){
     //  1) for old player locations
     for(var player in this.state.player_info){
         var info = this.state.player_info[player];
-        var pos = info.pos;
-        //console.log(pos);
-        var grid = this.state.grid;
-        grid[pos.x + '|' + pos.y] = {p: player, old: true};
+        // only update if player is moving
+        if(info.dir){
+            var pos = info.pos;
+            //console.log(pos);
+            var grid = this.state.grid;
+            grid[pos.x + '|' + pos.y] = {p: player, old: true};
+        }
     }
 
     // update all not dead players positons
     for(var player in this.state.player_info){
         var info = this.state.player_info[player];
+
+        info.previous_dir = info.dir;
         
         // process movement
-        var dir = info["dir"];
+        var dir = info.dir;
         var pos = info.pos;
         if(dir == "up"){
             pos.y--;
@@ -135,8 +155,10 @@ Pixelon.prototype.tick = function(){
             dead = true;
         } else if((pos.x+'|'+pos.y) in grid){
             //console.log('robin2');
-            //console.log('a', grid[pos.x+'|'+pos.y]);
+            console.log('a', grid[pos.x+'|'+pos.y]);
             if(grid[pos.x+'|'+pos.y].p == player && !('old' in grid[pos.x+'|'+pos.y])){
+                // we can't kill ourselves with our own head
+            } else {
                 dead = true;
             }
         }
@@ -164,7 +186,7 @@ Pixelon.prototype.tick = function(){
         var grid = this.state.grid;
 
         // TODO add event to only relevent players
-        this.state.events.push({'death': dead_player});
+        this.state.events.push({'death': dead_player, /*TODO player list*/});
 
         for(var gridspot in grid){
             if(grid[gridspot].p == dead_player){
