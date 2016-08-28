@@ -123,23 +123,26 @@ Pixelon.prototype.tick = function(){
 
     // update the grid
     //  1) remove dead players
-    dead_players = []
+    var dead_players = []
     for(var player in this.state.player_info){
+        //console.log('checking if player '+player+' is dead');
         var info = this.state.player_info[player];
         if('dead' in info){
+            //console.log('they are');
             dead_players.push(player);
         }
     }
-    for(var dead_player in dead_players){
-        console.log('player ' + player + ' has died!');
+    //console.log(dead_players);
+    dead_players.forEach((dead_player) => {
+        console.log('game -- player ' + dead_player + ' has died!');
         var grid = this.state.grid;
         for(var gridspot in grid){
-            if(grid[gridspot].p == player){
+            if(grid[gridspot].p == dead_player){
                 delete grid[gridspot];
             }
         }
         delete this.state.player_info[dead_player];
-    }
+    });
     //  2) new player locations
     for(var player in this.state.player_info){
         var info = this.state.player_info[player];
