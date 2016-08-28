@@ -124,6 +124,9 @@
 	            each(event.pos, function (pos) {
 	              newGrid[pos.y][pos.x] = null;
 	            });
+	            if (event.death * 1 === player) {
+	              _this.setName(null);
+	            }
 	          }
 	        });
 	      }
@@ -39431,16 +39434,16 @@
 	      var connection = this.props.connection;
 
 	      _mousetrap2.default.bind('left', function () {
-	        connection.send('left');
+	        connection.send(JSON.stringify({ type: 'direction', direction: 'left' }));
 	      });
 	      _mousetrap2.default.bind('right', function () {
-	        connection.send('right');
+	        connection.send(JSON.stringify({ type: 'direction', direction: 'right' }));
 	      });
 	      _mousetrap2.default.bind('up', function () {
-	        connection.send('up');
+	        connection.send(JSON.stringify({ type: 'direction', direction: 'up' }));
 	      });
 	      _mousetrap2.default.bind('down', function () {
-	        connection.send('down');
+	        connection.send(JSON.stringify({ type: 'direction', direction: 'down' }));
 	      });
 	    }
 	  }, {

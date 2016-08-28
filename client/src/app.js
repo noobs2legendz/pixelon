@@ -46,6 +46,9 @@ class App extends Component {
              each(event.pos, (pos) => {
                newGrid[pos.y][pos.x] = null;
              })
+             if (event.death*1 === player) {
+               this.setName(null);
+             }
            }
          })
        }

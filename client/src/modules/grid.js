@@ -16,16 +16,16 @@ export default class Grid extends Component {
   componentWillMount () {
     const {connection} = this.props;
     Mousetrap.bind('left', () => {
-      connection.send('left');
+      connection.send(JSON.stringify({type: 'direction', direction: 'left'}));
     });
     Mousetrap.bind('right', () => {
-      connection.send('right');
+      connection.send(JSON.stringify({type: 'direction', direction: 'right'}));
     });
     Mousetrap.bind('up', () => {
-      connection.send('up');
+      connection.send(JSON.stringify({type: 'direction', direction: 'up'}));
     });
     Mousetrap.bind('down', () => {
-      connection.send('down');
+      connection.send(JSON.stringify({type: 'direction', direction: 'down'}));
     });
   }
   render () {

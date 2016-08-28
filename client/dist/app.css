@@ -35,28 +35,32 @@ body {
   box-shadow: 0px 0px 50px 0px #4646FF;
 }
 .App_Color_blue .Player input {
-  background-color: #acacff;
+  box-shadow: 0px 0px 50px 0px #4646FF, inset 0px 0px 50px 0px #4646FF;
+  background-color: #dfdfff;
 }
 .App_Color_orange .currentHS {
   background-color: #FF9646;
   box-shadow: 0px 0px 50px 0px #FF9646;
 }
 .App_Color_orange .Player input {
-  background-color: #ffd0ac;
+  box-shadow: 0px 0px 50px 0px #FF9646, inset 0px 0px 50px 0px #FF9646;
+  background-color: #ffeddf;
 }
 .App_Color_green .currentHS {
   background-color: #64FF64;
   box-shadow: 0px 0px 50px 0px #64FF64;
 }
 .App_Color_green .Player input {
-  background-color: #caffca;
+  box-shadow: 0px 0px 50px 0px #64FF64, inset 0px 0px 50px 0px #64FF64;
+  background-color: #fdfffd;
 }
 .App_Color_red .currentHS {
   background-color: #FF4646;
   box-shadow: 0px 0px 50px 0px #FF4646;
 }
 .App_Color_red .Player input {
-  background-color: #ffacac;
+  box-shadow: 0px 0px 50px 0px #FF4646, inset 0px 0px 50px 0px #FF4646;
+  background-color: #ffdfdf;
 }
 .logo-container {
   text-align: center;
