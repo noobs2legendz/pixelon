@@ -215,7 +215,7 @@ Pixelon.prototype.tick = function(){
         grid[pos.x + '|' + pos.y] = {p: player};
     }
 
-    console.log('game -- current state: ', this.state);
+    //console.log('game -- current state: ', this.state);
 }
 
 Pixelon.prototype.get_game_state = function(player){
