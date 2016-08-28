@@ -64,6 +64,10 @@
 
 	var _grid2 = _interopRequireDefault(_grid);
 
+	var _player = __webpack_require__(289);
+
+	var _player2 = _interopRequireDefault(_player);
+
 	var _highscores = __webpack_require__(178);
 
 	var _highscores2 = _interopRequireDefault(_highscores);
@@ -94,16 +98,107 @@
 	    // Otherwise they will inherit the normal event arguments
 
 
+	    _this.setName = _this.setName.bind(_this);
+	    window.WebSocket = window.WebSocket || window.MozWebSocket;
+	    var isDebug = function isDebug() {
+	      return window.location.href.search("[?&]debug") !== -1;
+	    };
+	    var color = props.color;
+
+	    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
+	    window.connection = connection;
+	    connection.onmessage = function (message) {
+	      var parsedData = JSON.parse(message.data);
+	      var moves = parsedData.grid;
+	      var events = parsedData.events;
+	      var player = parsedData.player;
+	      // const cells = _.values(json);
+	      var newGrid = _lodash2.default.clone(_this.state.grid);
+	      var players = _this.state.players;
+
+
+	      if (events.length > 0) {
+	        console.log(events);
+	        each(events, function (event) {
+	          if (typeof event.death !== 'undefined') {
+	            each(event.pos, function (pos) {
+	              newGrid[pos.y][pos.x] = null;
+	            });
+	          }
+	        });
+	      }
+
+	      for (var key in moves) {
+	        var position = key.split('|');
+	        var move = moves[key];
+
+	        // add player to game
+	        if (typeof players[move.p] === 'undefined') {
+	          if (player !== move.p) {
+	            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
+	          } else {
+	            players[player] = color;
+	          }
+	        }
+
+	        if (position[0] >= 0 && position[1] >= 0) {
+	          if (typeof newGrid[position[1]] !== 'undefined' && typeof newGrid[position[1]][position[0]] !== 'undefined') {
+	            newGrid[position[1]][position[0]] = move;
+	          }
+	        }
+	      }
+
+	      _this.setState({
+	        grid: newGrid,
+	        player: player,
+	        players: players
+	      });
+	      // _.each(cells[0], (cell) => {
+	      // })
+	    };
+	    var grid = [];
+	    var GRID_HEIGHT = 20;
+	    var GRID_WIDTH = 78;
+	    for (var i = 0; i < GRID_HEIGHT; i++) {
+	      var row = [];
+	      for (var a = 0; a < GRID_WIDTH; a++) {
+	        row.push(null);
+	      }
+	      grid.push(row);
+	    }
 	    _this.state = {
-	      color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)]
+	      grid: grid,
+	      connection: connection,
+	      players: {},
+	      color: PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)],
+	      name: null,
+	      highscores: {
+	        server: 0,
+	        current: 0,
+	        previous: 0
+	      }
 	    };
 	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'setName',
+	    value: function setName(name) {
+	      this.setState({
+	        name: name
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var color = this.state.color;
+	      var _state = this.state;
+	      var color = _state.color;
+	      var name = _state.name;
+	      var players = _state.players;
+	      var connection = _state.connection;
+	      var grid = _state.grid;
+	      var player = _state.player;
+	      var highscores = _state.highscores;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -116,11 +211,11 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_highscores2.default, null),
+	          _react2.default.createElement(_highscores2.default, { highscores: highscores }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'Game Game_Color_' + color },
-	            _react2.default.createElement(_grid2.default, { color: color })
+	            !name ? _react2.default.createElement(_player2.default, { setName: this.setName }) : _react2.default.createElement(_grid2.default, { color: color, grid: grid, players: players, player: player, connection: connection })
 	          )
 	        )
 	      );
@@ -39327,86 +39422,13 @@
 	  function Grid(props, context) {
 	    _classCallCheck(this, Grid);
 
-	    var _this = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props, context));
-
-	    window.WebSocket = window.WebSocket || window.MozWebSocket;
-	    var isDebug = function isDebug() {
-	      return window.location.href.search("[?&]debug") !== -1;
-	    };
-	    var color = props.color;
-
-	    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
-	    connection.onmessage = function (message) {
-	      var parsedData = JSON.parse(message.data);
-	      var moves = parsedData.grid;
-	      var events = parsedData.events;
-	      var player = parsedData.player;
-	      // const cells = _.values(json);
-	      var newGrid = _.clone(_this.state.grid);
-	      var players = _this.state.players;
-
-
-	      if (events.length > 0) {
-	        console.log(events);
-	        (0, _each2.default)(events, function (event) {
-	          if (typeof event.death !== 'undefined') {
-	            (0, _each2.default)(event.pos, function (pos) {
-	              newGrid[pos.y][pos.x] = null;
-	            });
-	          }
-	        });
-	      }
-
-	      for (var key in moves) {
-	        var position = key.split('|');
-	        var move = moves[key];
-
-	        // add player to game
-	        if (typeof players[move.p] === 'undefined') {
-	          if (player !== move.p) {
-	            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
-	          } else {
-	            players[player] = color;
-	          }
-	        }
-
-	        if (position[0] >= 0 && position[1] >= 0) {
-	          if (typeof newGrid[position[1]] !== 'undefined' && typeof newGrid[position[1]][position[0]] !== 'undefined') {
-	            newGrid[position[1]][position[0]] = move;
-	          }
-	        }
-	      }
-
-	      _this.setState({
-	        grid: newGrid,
-	        player: player,
-	        players: players
-	      });
-	      // _.each(cells[0], (cell) => {
-	      // })
-	    };
-	    var grid = [];
-	    var GRID_HEIGHT = 20;
-	    var GRID_WIDTH = 78;
-	    for (var i = 0; i < GRID_HEIGHT; i++) {
-	      var row = [];
-	      for (var a = 0; a < GRID_WIDTH; a++) {
-	        row.push(null);
-	      }
-	      grid.push(row);
-	    }
-	    _this.state = {
-	      grid: grid,
-	      connection: connection,
-	      players: {}
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this, props, context));
 	  }
 
 	  _createClass(Grid, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      var connection = this.state.connection;
+	      var connection = this.props.connection;
 
 	      _mousetrap2.default.bind('left', function () {
 	        connection.send('left');
@@ -39427,10 +39449,9 @@
 	      var _props = this.props;
 	      var items = _props.items;
 	      var addItem = _props.addItem;
-	      var _state = this.state;
-	      var grid = _state.grid;
-	      var player = _state.player;
-	      var players = _state.players;
+	      var grid = _props.grid;
+	      var players = _props.players;
+	      var player = _props.player;
 
 	      var rows = [];
 	      _.each(grid, function (row, index) {
@@ -39610,6 +39631,11 @@
 	  _createClass(Highscores, [{
 	    key: "render",
 	    value: function render() {
+	      var _props$highscores = this.props.highscores;
+	      var server = _props$highscores.server;
+	      var current = _props$highscores.current;
+	      var previous = _props$highscores.previous;
+
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "highscores" },
@@ -39624,7 +39650,7 @@
 	          _react2.default.createElement(
 	            "div",
 	            { className: "currentScore" },
-	            "15,240"
+	            current
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -39638,7 +39664,7 @@
 	          _react2.default.createElement(
 	            "div",
 	            { className: "previousScore" },
-	            "284,192"
+	            previous
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -39652,7 +39678,7 @@
 	          _react2.default.createElement(
 	            "div",
 	            { className: "serverScore" },
-	            "12,284,192"
+	            server
 	          )
 	        )
 	      );
@@ -43207,6 +43233,81 @@
 
 	module.exports = basePropertyDeep;
 
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Player = function (_Component) {
+	  _inherits(Player, _Component);
+
+	  function Player(props, context) {
+	    _classCallCheck(this, Player);
+
+	    var _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, props, context));
+
+	    _this.startGame = _this.startGame.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Player, [{
+	    key: 'startGame',
+	    value: function startGame(e) {
+	      var name = e.target.value;
+	      if (e.key === 'Enter') {
+	        window.connection.send(JSON.stringify({
+	          type: 'start',
+	          name: name
+	        }));
+	        this.props.setName(name);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var cell = _props.cell;
+	      var player = _props.player;
+	      var players = _props.players;
+
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'Player' },
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'CHOOSE A NAME'
+	        ),
+	        _react2.default.createElement('input', { type: 'text', onKeyPress: this.startGame, placeholder: 'Choose your destiny' })
+	      );
+	    }
+	  }]);
+
+	  return Player;
+	}(_react.Component);
+
+	exports.default = Player;
 
 /***/ }
 /******/ ]);

@@ -4,9 +4,9 @@
 @color-orange: #FF9646;
 @color-red: #FF4646;
 @color-green: #64FF64;
-
+@color-purple: #0A0A3C;
 body{
-  background-color: #0A0A3C;
+  background-color: @color-purple;
   margin: 0px;
 }
 #game {
@@ -44,11 +44,17 @@ body{
       background-color: @color-blue;
       box-shadow: 0px 0px 50px 0px @color-blue;
     }
+    .Player input {
+      background-color: lighten(@color-blue, 20%);
+    }
   }
   &_Color_orange {
     .currentHS{
       background-color: @color-orange;
       box-shadow: 0px 0px 50px 0px @color-orange;
+    }
+    .Player input {
+      background-color: lighten(@color-orange, 20%);
     }
   }
   &_Color_green {
@@ -56,11 +62,17 @@ body{
       background-color: @color-green;
       box-shadow: 0px 0px 50px 0px @color-green;
     }
+    .Player input {
+      background-color: lighten(@color-green, 20%);
+    }
   }
   &_Color_red {
     .currentHS{
       background-color: @color-red;
       box-shadow: 0px 0px 50px 0px @color-red;
+    }
+    .Player input {
+      background-color: lighten(@color-red, 20%);
     }
   }
 }
@@ -70,6 +82,30 @@ padding-top: 45px;
 color: white;
 font-family: 'Roboto Mono', monospace;
 margin:0px;
+}
+.Player {
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+  input {
+    font-family: 'Roboto Mono', monospace;
+    outline: 0;
+    border: 0;
+    padding: 20px;
+    font-size: 30px;
+    margin: 50px;
+    background: lighten(@color-purple, 50%);
+    margin-bottom: 200px;
+    color: inherit;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  ::-webkit-input-placeholder { /* Chrome */
+    font-family: 'Roboto Mono', monospace;
+    color: inherit;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
 }
 
 .logo {
@@ -118,7 +154,7 @@ color: white;
 font-size: 28px;
 font-weight: 700;
 line-height: 37px;
-
+min-width: 120px;
 padding-left: 20px;
 padding-right: 60px;
 padding-bottom: 20px;
@@ -347,17 +383,22 @@ background: #fff;
 display: block;
 margin: auto;
 border-radius: 6px;
-opacity: 0.2;
 position: absolute;
 top: 8px;
 left: 8px;
 }
 .Grid_Row {
 }
+.Grid_Cell {
+  opacity: 0.2;
+  transition: opacity linear 0.2s;
+}
 .Grid_Cell_Occupied {
   background: #fff;
+  opacity: 1 !important;
   &_Color_blue {
     background: @color-blue;
+
     box-shadow: 0px 0px 50px 0px @color-blue, inset 0px 0px 50px 0px @color-blue;
   }
   &_Color_orange {
@@ -374,5 +415,4 @@ left: 8px;
   }
 }
 .Grid_Cell_Owner {
-background: #000 !important;
 }

@@ -34,17 +34,29 @@ body {
   background-color: #4646FF;
   box-shadow: 0px 0px 50px 0px #4646FF;
 }
+.App_Color_blue .Player input {
+  background-color: #acacff;
+}
 .App_Color_orange .currentHS {
   background-color: #FF9646;
   box-shadow: 0px 0px 50px 0px #FF9646;
+}
+.App_Color_orange .Player input {
+  background-color: #ffd0ac;
 }
 .App_Color_green .currentHS {
   background-color: #64FF64;
   box-shadow: 0px 0px 50px 0px #64FF64;
 }
+.App_Color_green .Player input {
+  background-color: #caffca;
+}
 .App_Color_red .currentHS {
   background-color: #FF4646;
   box-shadow: 0px 0px 50px 0px #FF4646;
+}
+.App_Color_red .Player input {
+  background-color: #ffacac;
 }
 .logo-container {
   text-align: center;
@@ -52,6 +64,30 @@ body {
   color: white;
   font-family: 'Roboto Mono', monospace;
   margin: 0px;
+}
+.Player {
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+}
+.Player input {
+  font-family: 'Roboto Mono', monospace;
+  outline: 0;
+  border: 0;
+  padding: 20px;
+  font-size: 30px;
+  margin: 50px;
+  background: #6060e5;
+  margin-bottom: 200px;
+  color: inherit;
+  text-align: center;
+  text-transform: uppercase;
+}
+.Player ::-webkit-input-placeholder {
+  /* Chrome */
+  font-family: 'Roboto Mono', monospace;
+  color: inherit;
+  text-align: center;
+  text-transform: uppercase;
 }
 .logo {
   /*box-shadow: 0px 0px 50px 0px rgba(0,0,255,0.8);*/
@@ -89,6 +125,7 @@ body {
   font-size: 28px;
   font-weight: 700;
   line-height: 37px;
+  min-width: 120px;
   padding-left: 20px;
   padding-right: 60px;
   padding-bottom: 20px;
@@ -276,13 +313,17 @@ body {
   display: block;
   margin: auto;
   border-radius: 6px;
-  opacity: 0.2;
   position: absolute;
   top: 8px;
   left: 8px;
 }
+.Grid_Cell {
+  opacity: 0.2;
+  transition: opacity linear 0.2s;
+}
 .Grid_Cell_Occupied {
   background: #fff;
+  opacity: 1 !important;
 }
 .Grid_Cell_Occupied_Color_blue {
   background: #4646FF;
@@ -299,7 +340,4 @@ body {
 .Grid_Cell_Occupied_Color_red {
   background: #FF4646;
   box-shadow: 0px 0px 50px 0px #FF4646, inset 0px 0px 50px 0px #FF4646;
-}
-.Grid_Cell_Owner {
-  background: #000 !important;
 }

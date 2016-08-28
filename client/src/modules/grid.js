@@ -12,80 +12,9 @@ const PLAYER_COLORS = [
 export default class Grid extends Component {
   constructor (props, context) {
     super(props, context);
-    window.WebSocket = window.WebSocket || window.MozWebSocket;
-    var isDebug = function(){
-      return window.location.href.search("[?&]debug") !== -1;
-    };
-    var {color} = props;
-    var connection = new WebSocket(isDebug() ? 'ws://127.0.0.1:1337' : 'wss://pixelon.herokuapp.com/');
-    connection.onmessage = (message) => {
-      var parsedData = JSON.parse(message.data);
-      var moves = parsedData.grid;
-      var events = parsedData.events;
-      var player = parsedData.player;
-      // const cells = _.values(json);
-      var newGrid = _.clone(this.state.grid);
-      const {players} = this.state;
-
-      if(events.length > 0) {
-        console.log(events);
-        each(events, (event) => {
-          if (typeof event.death !== 'undefined') {
-            each(event.pos, (pos) => {
-              newGrid[pos.y][pos.x] = null;
-            })
-          }
-        })
-      }
-
-      for (var key in moves) {
-        const position = key.split('|');
-        const move = moves[key];
-
-        // add player to game
-        if (typeof players[move.p] === 'undefined') {
-          if (player !== move.p) {
-            players[move.p] = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
-          } else {
-            players[player] = color;
-          }
-
-        }
-
-        if (position[0] >= 0 && position[1] >= 0) {
-          if (typeof newGrid[position[1]] !== 'undefined' && typeof newGrid[position[1]][position[0]] !== 'undefined') {
-            newGrid[position[1]][position[0]] = move;
-          }
-        }
-      }
-
-
-      this.setState({
-        grid: newGrid,
-        player,
-        players,
-      })
-      // _.each(cells[0], (cell) => {
-      // })
-    };
-    var grid = [];
-    var GRID_HEIGHT = 20;
-    var GRID_WIDTH = 78;
-    for(var i = 0; i < GRID_HEIGHT; i++) {
-      var row = [];
-      for(var a = 0; a < GRID_WIDTH; a++) {
-        row.push(null)
-      }
-      grid.push(row);
-    }
-    this.state = {
-      grid,
-      connection,
-      players: {},
-    }
   }
   componentWillMount () {
-    const {connection} = this.state;
+    const {connection} = this.props;
     Mousetrap.bind('left', () => {
       connection.send('left');
     });
@@ -100,8 +29,7 @@ export default class Grid extends Component {
     });
   }
   render () {
-    const {items, addItem} = this.props;
-    const {grid, player, players} = this.state;
+    const {items, addItem, grid, players, player} = this.props;
     const rows = [];
     _.each(grid, function (row, index) {
       rows.push(<Row player={player} cells={row} players={players} />);
