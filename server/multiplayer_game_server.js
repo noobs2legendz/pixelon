@@ -95,6 +95,15 @@ MulticlientGameServer.prototype.update_client = function(client){
     var player_name = this.client_player_names[client];
     var game_data = this.game.get_game_state(player_name);
     game_data.player = client;
+    // TODO HAX ARE HERE
+    if(game_data.events.length){
+        for(var i in game_data.events){
+            the_event = game_data.events[i];
+            if('death' in the_event){ // is actually death event
+                the_event.death = client;
+            }
+        }
+    }
     //console.log(game_data);
     socket.sendUTF(JSON.stringify(game_data));
 }
