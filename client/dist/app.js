@@ -222,21 +222,21 @@
 	  return Grid;
 	}(Component);
 
-	var Game = function (_Component4) {
-	  _inherits(Game, _Component4);
+	var App = function (_Component4) {
+	  _inherits(App, _Component4);
 
-	  function Game() {
-	    _classCallCheck(this, Game);
+	  function App() {
+	    _classCallCheck(this, App);
 
-	    return _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 	  }
 
-	  _createClass(Game, [{
+	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'Game' },
+	        { className: 'App' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'logo-container' },
@@ -293,7 +293,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'game' },
+	            { className: 'Game' },
 	            _react2.default.createElement(Grid, null)
 	          )
 	        )
@@ -301,10 +301,10 @@
 	    }
 	  }]);
 
-	  return Game;
+	  return App;
 	}(Component);
 
-	_reactDom2.default.render(_react2.default.createElement(Game, null), document.getElementById('game'));
+	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
